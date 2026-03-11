@@ -1,0 +1,91 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font: inherit;
+	scroll-behavior: smooth; // плавный скролл
+	-webkit-tap-highlight-color: transparent; // убирает синий фон при клике на кнопку (mobile)
+}
+
+body,
+html {
+	height: 100%;
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 1.2;
+}
+
+
+ol,
+ul,
+li {
+	list-style: none;
+}
+
+
+textarea {
+	resize: none;
+}
+
+input,
+select,
+textarea,
+button {
+	outline: none;
+	border: none;
+}
+
+button {
+	user-select: none;
+	cursor: pointer;
+}
+
+a {
+	cursor: pointer;
+	text-decoration: none;
+	user-select: none;
+}
+
+:where(svg) {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+article {
+	padding: 0;
+	margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: bold;
+}
+
+img,
+button,
+svg,
+video,
+audio {
+	user-select: none;
+}
+
+
+svg {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}

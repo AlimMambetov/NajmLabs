@@ -1,0 +1,46 @@
+@use "@/styles/global/vars.scss" as *;
+@use "@/styles/global/mixins.scss" as *;
+@use "@/styles/global/funcs.scss" as *;
+
+
+
+:root {
+	--header-h: 90px;
+}
+
+* {
+	scroll-margin-top: 40px;
+}
+
+body,
+html {
+	position: relative;
+	color: hue(heavy);
+}
+
+
+body {
+	overflow: hidden;
+	overflow-y: auto;
+	min-height: 100dvh;
+	min-width: screen(min);
+}
+
+@mixin selected {
+	background-color: hue(primary);
+	color: hue(heavy);
+	text-shadow: none;
+}
+
+
+::selection {
+	@include selected;
+}
+
+::-moz-selection {
+	@include selected;
+}
+
+::-webkit-selection {
+	@include selected;
+}

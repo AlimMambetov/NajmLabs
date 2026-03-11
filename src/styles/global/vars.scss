@@ -1,0 +1,210 @@
+@use "sass:map";
+@use "sass:list";
+
+
+$z-indexes: (
+	'hidden': -1,
+	'base': 0,
+	'block': 10,
+	'pin': 20,
+	'overlay': 30,
+	'modal': 40,
+	'notice': 50,
+	'max': 9999
+);
+
+@function z($name) {
+	@if map.has-key($z-indexes, $name) {
+		@return map.get($z-indexes, $name); // ✅ Исправлено!
+	}
+
+	@else {
+		@error 'Ключ `#{$name}` не найден. Доступные ключи: #{map.keys($z-indexes)}';
+	}
+}
+
+$viewport: (
+	max: 1440px,
+	desktop: 1280px,
+	laptop: 1024px,
+	tablet: 768px,
+	phone: 480px,
+	min: 360px,
+);
+
+@function screen($name: "phone") {
+	@if not map.has-key($viewport, $name) {
+		@error "Ключ `#{$name}` не найден. Доступные ключи: #{map.keys($viewport)}";
+	}
+
+	@return map.get($viewport, $name);
+}
+
+
+
+@mixin is($device: "phone", $mode: exact) {
+	$modes: exact, max, min, range;
+	$devices: phone, tablet, laptop, desktop, max;
+	$index: list.index($devices, $device);
+
+	@if not $index {
+		@error "Unknown device: #{$device}. Available devices: #{list.join($devices, ', ')}";
+	}
+
+	// Режим "меньше или равно" (max)
+	@if $mode ==max {
+		@if $device ==max {
+			@error "Cannot use 'max' mode with 'max' device";
+		}
+
+		@media (max-width: map.get($viewport, $device)) {
+			@content;
+		}
+	}
+
+	// Режим "больше или равно" (min)
+	@else if $mode ==min {
+		@if $device ==phone {
+
+			// Все устройства начиная с phone (включая phone)
+			@media (min-width: 0px) {
+				@content;
+			}
+		}
+
+		@else if $device ==max {
+			@error "Cannot use 'min' mode with 'max' device";
+		}
+
+		@else {
+			// Находим предыдущее устройство для определения min-width
+			$prev-device: list.nth($devices, $index);
+			$min-width: map.get($viewport, $prev-device) + 1px;
+
+			@media (min-width: $min-width) {
+				@content;
+			}
+		}
+	}
+
+	// Режим "диапазон" (range) - между устройствами
+	@else if $mode ==range {
+		@if $device ==phone or $device ==max {
+			@error "Cannot use 'range' mode with '#{$device}' device";
+		}
+
+		$prev-device: list.nth($devices, $index - 1);
+		$min: map.get($viewport, $prev-device) + 1px;
+		$max: map.get($viewport, $device);
+
+		@media (min-width: $min) and (max-width: $max) {
+			@content;
+		}
+	}
+
+	// Режим "точно" (exact) - оригинальная логика
+	@else if $mode ==exact {
+		@if $index ==1 {
+
+			// phone
+			@media (max-width: map.get($viewport, $device)) {
+				@content;
+			}
+		}
+
+		@else if $device ==max {
+			// desktop and larger
+			$prev-device: list.nth($devices, $index - 1);
+			$min-width: map.get($viewport, $prev-device) + 1px;
+
+			@media (min-width: $min-width) {
+				@content;
+			}
+		}
+
+		@else {
+			// tablet, laptop
+			$prev-device: list.nth($devices, $index - 1);
+			$min: map.get($viewport, $prev-device) + 1px;
+			$max: map.get($viewport, $device);
+
+			@media (min-width: $min) and (max-width: $max) {
+				@content;
+			}
+		}
+	}
+
+	@else {
+		@error "Unknown mode: #{$mode}. Available modes: #{list.join($modes, ', ')}";
+	}
+}
+
+
+$radius: (
+	round: 100000px,
+	L: 30px,
+	M: 20px,
+	S: 10px,
+);
+
+
+@function radius($name: "S") {
+	@if not map.has-key($radius, $name) {
+		@error "Ключ `#{$name}` не найден. Доступные ключи: #{map.keys($viewport)}";
+	}
+
+	@return map.get($radius, $name);
+}
+
+
+$palette: (
+	'white': #FFFFFF,
+	'black': #282A2C,
+	'orange':#F15A29,
+	'green': #43875E,
+	'red': #C83939,
+	'gray': #808080,
+);
+
+@function palette($name) {
+	@if not map.has-key($palette, $name) {
+		@error "Ключ `#{$name}` не найден. Доступные ключи. Доступные цвета: #{map.keys($palette)}";
+	}
+
+	@return map.get($palette, $name);
+}
+
+
+$colors: (
+	b: #000,
+	w: #fff,
+	plain: palette('white'),
+	primary: palette('orange'),
+	second: palette('gray'),
+	heavy: palette('black'),
+	danger: palette('red'),
+	success: palette('green'),
+);
+
+
+@function hue($name: "b", $a: 1) {
+	@if not map.has-key($colors, $name) {
+		@error "Ключ `#{$name}` не найден. Доступные ключи: #{map.keys($colors)}";
+	}
+
+	@return rgba(map.get($colors, $name), $a);
+}
+
+
+
+// --------------------- set root color vars
+
+:root {
+	@each $key, $value in $colors {
+		--clr-#{$key} : #{$value};
+	}
+
+	@each $key, $value in $viewport {
+		--w-#{$key} : #{$value};
+	}
+}

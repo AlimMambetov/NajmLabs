@@ -1,0 +1,46 @@
+{
+  "name": "NajmLabs",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "build": "next build",
+    "export": "next export",
+    "_v": "version-manager.bat",
+    "git": "git-manager.bat"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@reduxjs/toolkit": "^2.10.0",
+    "@use-gesture/react": "^10.3.1",
+    "clsx": "^2.1.1",
+    "copy-to-clipboard": "^3.3.3",
+    "date-fns": "^4.1.0",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.552.0",
+    "marked": "^17.0.3",
+    "motion": "^12.23.24",
+    "next": "^16.0.1",
+    "normalize.css": "^8.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.66.0",
+    "react-redux": "^9.2.0",
+    "sass": "^1.93.3",
+    "sonner": "^2.0.7",
+    "swiper": "^12.0.3",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "cross-env": "^10.1.0",
+    "dotenv-cli": "^11.0.0",
+    "raw-loader": "^4.0.2",
+    "typescript": "^5"
+  }
+}

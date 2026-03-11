@@ -1,0 +1,184 @@
+@mixin sec-p {
+	--sec-p: 100px;
+
+
+	padding: {
+		top: var(--sec-p);
+		bottom: var(--sec-p);
+	}
+
+	;
+
+
+}
+
+
+@mixin on-hover {
+	@media (hover: hover) and (pointer: fine) {
+		&:not([disabled]):hover {
+			@content;
+		}
+	}
+}
+
+
+
+@mixin pos-center($a: xy) {
+	position: absolute;
+
+	@if($a ==xy) {
+		left: 50%;
+		top: 50%;
+		translate: -50% -50%;
+	}
+
+	@if($a ==x) {
+		left: 50%;
+		translate: -50%;
+	}
+
+	@if($a ==y) {
+		top: 50%;
+		translate: 0 -50%;
+	}
+}
+
+
+@mixin flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+@mixin flex-col($gap: 0px, $a: '', $b: '') {
+	display: flex;
+	flex-direction: column;
+	gap: $gap;
+
+	@if($a =='x-center') {
+		align-items: center;
+	}
+
+	@if($a =='x-start') {
+		align-items: flex-start;
+	}
+
+	@if($a =='x-end') {
+		align-items: flex-end;
+	}
+
+	@if($a =='y-center') {
+		justify-content: center;
+	}
+
+	@if($a =='y-start') {
+		justify-content: flex-start;
+	}
+
+	@if($a =='y-end') {
+		justify-content: flex-end;
+	}
+
+	@if($b =='x-center') {
+		align-items: center;
+	}
+
+	@if($b =='x-start') {
+		align-items: flex-start;
+	}
+
+	@if($b =='x-end') {
+		align-items: flex-end;
+	}
+
+	@if($b =='y-center') {
+		justify-content: center;
+	}
+
+	@if($b =='y-start') {
+		justify-content: flex-start;
+	}
+
+	@if($b =='y-end') {
+		justify-content: flex-end;
+	}
+}
+
+@mixin flex-row($gap: 0px, $a: '', $b: '') {
+	display: flex;
+	flex-direction: row;
+	gap: $gap;
+
+	@if($a =='y-center') {
+		align-items: center;
+	}
+
+	@if($a =='y-start') {
+		align-items: flex-start;
+	}
+
+	@if($a =='y-end') {
+		align-items: flex-end;
+	}
+
+	@if($a =='x-center') {
+		justify-content: center;
+	}
+
+	@if($a =='x-start') {
+		justify-content: flex-start;
+	}
+
+	@if($a =='x-end') {
+		justify-content: flex-end;
+	}
+
+	@if($b =='y-center') {
+		align-items: center;
+	}
+
+	@if($b =='y-start') {
+		align-items: flex-start;
+	}
+
+	@if($b =='y-end') {
+		align-items: flex-end;
+	}
+
+	@if($b =='x-center') {
+		justify-content: center;
+	}
+
+	@if($b =='x-start') {
+		justify-content: flex-start;
+	}
+
+	@if($b =='x-end') {
+		justify-content: flex-end;
+	}
+}
+
+@mixin m-center {
+	margin: {
+		left: auto;
+		right: auto;
+	}
+
+	;
+}
+
+
+@mixin line-clamp($lines: 1) {
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@mixin flow($props, $time: 0.3s, $anim: ease) {
+	transition-duration: $time;
+	transition-timing-function: $anim;
+	transition-property: $props;
+}

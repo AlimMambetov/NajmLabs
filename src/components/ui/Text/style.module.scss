@@ -1,0 +1,42 @@
+:where(.text) {
+	font-weight: 300;
+	color: inherit;
+	line-height: 1.1;
+}
+
+
+
+
+.text {
+
+	&[data-size="1"] {
+		font-size: 16px;
+
+		@include is('tablet', min) {
+			font-size: 26px;
+		}
+	}
+
+	&[data-size="2"] {
+		font-size: 16px;
+
+		@include is('tablet', min) {
+			font-size: 22px;
+		}
+	}
+
+	&[data-size="3"] {
+		font-size: 18px;
+	}
+
+	&[data-size="4"] {
+		font-size: 14px;
+
+		@include is('tablet', min) {
+			font-size: 16px;
+		}
+
+	}
+
+
+}

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import "@/styles/index.scss";
 import { AppProviders } from "./_providers";
-import { Footer, Header } from "@/components/layout";
-import { fontComfortaa } from "@/scripts/fonts";
+import { fonts } from "@/scripts/fonts";
+import { Particles } from "@/components/layout";
+
 
 export const metadata: Metadata = {
-  title: "TalkCoffee",
-  description: "Кофе с характером, десерты с душой. В самом сердце Чегема!",
+  title: "NajmLabs",
+  description: "",
 };
 
 export default async function RootLayout({
@@ -14,9 +15,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (<>
-    <html lang="ru" className={fontComfortaa.variable}>
+    <html lang="ru" className={fonts.join(' ')}>
       <head>
         <link rel="icon" type="image/svg" href="/images/icon.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,10 +24,9 @@ export default async function RootLayout({
       </head>
       <body>
         <AppProviders>
-          <Header />
           {children}
-          <Footer />
         </AppProviders>
+        <Particles variant={1} />
       </body>
     </html>
   </>);

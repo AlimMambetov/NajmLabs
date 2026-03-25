@@ -1,0 +1,56 @@
+.circle{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 50px auto;
+
+	width: 800px;
+	aspect-ratio: 1/1;
+
+	img{
+		position: absolute;
+	}
+}
+
+@keyframes rotateRight {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes rotateLeft {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(-360deg);
+	}
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.rotate-right {
+	animation: rotateRight 20s linear infinite;
+}
+
+.rotate-left {
+	animation: rotateLeft 20s linear infinite;
+}
+
+.pulse {
+	animation: pulse 2s ease-in-out infinite;
+}

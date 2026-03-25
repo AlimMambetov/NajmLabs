@@ -1,7 +1,1 @@
 export * from './Icon'
-export * from './Button'
-export * from './Img'
-export * from './LinkIcon'
-export * from './LinkText'
-export * from './Text'
-export * from './Title'

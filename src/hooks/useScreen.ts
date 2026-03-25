@@ -1,108 +1,393 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, ReactNode } from 'react'
 
-export type DeviceType = 'mobile' | 'tablet' | 'laptop' | 'desktop';
-
-interface ScreenSize {
-	width: number;
-	height: number;
-	isMobile: boolean;
-	isTablet: boolean;
-	isLaptop: boolean;
-	isDesktop: boolean;
-	isTouch: boolean;
-	deviceType: DeviceType;
+export const breakpoints = {
+	phone: 480,      // 0-479px: все телефоны (iPhone 14 Pro Max - 430px)
+	tablet: 1024,    // 480-1023px: все планшеты (iPad Pro 12.9" - 1024px)
+	laptop: 1440,    // 1024-1439px: все ноутбуки (MacBook Air - 1280px)
+	desktop: 1920,   // 1440px+: десктопы (Full HD - 1920px)
 }
 
-const BREAKPOINTS = {
-	mobile: 768,
-	tablet: 1024,
-	laptop: 1440,
-	desktop: 1920,
-} as const;
+export type DeviceType = keyof typeof breakpoints
 
-export const useScreen = (debounceDelay: number = 100): ScreenSize => {
-	const [screenSize, setScreenSize] = useState<ScreenSize>({
-		width: typeof window !== 'undefined' ? window.innerWidth : 0,
-		height: typeof window !== 'undefined' ? window.innerHeight : 0,
-		isMobile: false,
-		isTablet: false,
-		isLaptop: false,
-		isDesktop: false,
-		isTouch: true,
-		deviceType: 'mobile',
-	});
+const mediaQueries = {
+	desktop: `(min-width: ${breakpoints.laptop}px)`,      // от 1440px
+	laptop: `(min-width: ${breakpoints.tablet}px) and (max-width: ${breakpoints.laptop - 1}px)`,  // 1024-1439px
+	tablet: `(min-width: ${breakpoints.phone}px) and (max-width: ${breakpoints.tablet - 1}px)`,   // 480-1023px
+	phone: `(max-width: ${breakpoints.phone - 1}px)`,     // 0-479px
+}
+
+const deviceOrder: DeviceType[] = ['phone', 'tablet', 'laptop', 'desktop']
+
+const getDeviceType = (): DeviceType => {
+	if (typeof window === 'undefined') return 'desktop'
+
+	if (window.matchMedia(mediaQueries.desktop).matches) return 'desktop'
+	if (window.matchMedia(mediaQueries.laptop).matches) return 'laptop'
+	if (window.matchMedia(mediaQueries.tablet).matches) return 'tablet'
+	return 'phone'
+}
+
+// Кэш с лимитом
+class AdaptiveValueCache {
+	private cache = new Map<string, any>()
+	private readonly maxSize: number
+	private accessOrder: string[] = []
+
+	constructor(maxSize: number = 100) {
+		this.maxSize = maxSize
+	}
+
+	private updateAccessOrder(key: string) {
+		this.accessOrder = this.accessOrder.filter(k => k !== key)
+		this.accessOrder.push(key)
+	}
+
+	private evictIfNeeded() {
+		if (this.cache.size >= this.maxSize) {
+			const oldestKey = this.accessOrder.shift()
+			if (oldestKey) {
+				this.cache.delete(oldestKey)
+			}
+		}
+	}
+
+	get(key: string): any | undefined {
+		if (this.cache.has(key)) {
+			this.updateAccessOrder(key)
+			return this.cache.get(key)
+		}
+		return undefined
+	}
+
+	set(key: string, value: any): void {
+		this.cache.set(key, value)
+		this.updateAccessOrder(key)
+		this.evictIfNeeded()
+	}
+
+	clear(): void {
+		this.cache.clear()
+		this.accessOrder = []
+	}
+
+	get size(): number {
+		return this.cache.size
+	}
+}
+
+const cache = new AdaptiveValueCache(200)
+
+const getCacheKey = (values: any, options: any, currentDevice: string) => {
+	return JSON.stringify({ values, options, currentDevice })
+}
+
+const interpolate = (start: number, end: number, ratio: number): number => {
+	return start + (end - start) * ratio
+}
+
+const getDeviceIndex = (device: DeviceType): number => {
+	return deviceOrder.indexOf(device)
+}
+
+// Типы для DeviceSlot
+export type MatchPattern =
+	| DeviceType
+	| `${DeviceType}-${DeviceType}`
+	| `>=${DeviceType}`
+	| `<=${DeviceType}`
+	| `not:${DeviceType}`
+	| DeviceType[]
+	| ((device: DeviceType) => boolean)
+
+export interface DeviceSlotProps {
+	match: MatchPattern
+	children: ReactNode | ((device: DeviceType) => ReactNode)
+	fallback?: ReactNode
+}
+
+// Функция проверки соответствия
+const checkMatch = (pattern: MatchPattern, currentDevice: DeviceType): boolean => {
+	// Функция
+	if (typeof pattern === 'function') {
+		return pattern(currentDevice)
+	}
+
+	// Массив
+	if (Array.isArray(pattern)) {
+		return pattern.some(p => {
+			if (p.startsWith('not:')) {
+				const device = p.replace('not:', '') as DeviceType
+				return currentDevice !== device
+			}
+			return p === currentDevice
+		})
+	}
+
+	// Строковые паттерны
+	const patternStr = pattern
+
+	// not:phone
+	if (patternStr.startsWith('not:')) {
+		const device = patternStr.replace('not:', '') as DeviceType
+		return currentDevice !== device
+	}
+
+	// >=tablet
+	if (patternStr.startsWith('>=')) {
+		const device = patternStr.slice(2) as DeviceType
+		const currentIndex = getDeviceIndex(currentDevice)
+		const targetIndex = getDeviceIndex(device)
+		return currentIndex >= targetIndex
+	}
+
+	// <=laptop
+	if (patternStr.startsWith('<=')) {
+		const device = patternStr.slice(2) as DeviceType
+		const currentIndex = getDeviceIndex(currentDevice)
+		const targetIndex = getDeviceIndex(device)
+		return currentIndex <= targetIndex
+	}
+
+	// phone-laptop (диапазон)
+	if (patternStr.includes('-')) {
+		const [from, to] = patternStr.split('-') as [DeviceType, DeviceType]
+		const fromIndex = getDeviceIndex(from)
+		const toIndex = getDeviceIndex(to)
+		const currentIndex = getDeviceIndex(currentDevice)
+		return currentIndex >= fromIndex && currentIndex <= toIndex
+	}
+
+	// Одиночное устройство
+	return patternStr === currentDevice
+}
+
+export const useScreen = () => {
+	const [currentDevice, setCurrentDevice] = useState<DeviceType>(getDeviceType)
+
+	const timeoutRef = useRef<NodeJS.Timeout>(null)
+	const lastDeviceRef = useRef<DeviceType>(currentDevice)
+	const isUpdatingRef = useRef(false)
+
+	const updateDevice = useCallback(() => {
+		if (isUpdatingRef.current) return
+
+		isUpdatingRef.current = true
+
+		const newDevice = getDeviceType()
+
+		if (lastDeviceRef.current !== newDevice) {
+			lastDeviceRef.current = newDevice
+			setCurrentDevice(newDevice)
+		}
+
+		isUpdatingRef.current = false
+	}, [])
 
 	useEffect(() => {
-		const getDeviceType = (width: number): DeviceType => {
-			if (width < BREAKPOINTS.mobile) return 'mobile';
-			if (width < BREAKPOINTS.tablet) return 'tablet';
-			if (width < BREAKPOINTS.laptop) return 'laptop';
-			return 'desktop';
-		};
+		updateDevice()
 
-		const updateScreenSize = () => {
-			const width = window.innerWidth;
-			const height = window.innerHeight;
-			const deviceType = getDeviceType(width);
+		const debouncedUpdate = () => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current)
+			}
+			timeoutRef.current = setTimeout(() => {
+				updateDevice()
+			}, 50)
+		}
 
-			setScreenSize({
-				width,
-				height,
-				isMobile: deviceType === 'mobile',
-				isTablet: deviceType === 'tablet',
-				isLaptop: deviceType === 'laptop',
-				isDesktop: deviceType === 'desktop',
-				isTouch: deviceType === 'mobile' || deviceType === 'tablet',
-				deviceType,
-			});
-		};
+		window.addEventListener('resize', debouncedUpdate)
 
-		let timeoutId: NodeJS.Timeout;
-		const handleResize = () => {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(updateScreenSize, debounceDelay);
-		};
-
-		updateScreenSize();
-
-		window.addEventListener('resize', handleResize);
+		const mediaQueryLists = Object.values(mediaQueries).map(query => {
+			const mql = window.matchMedia(query)
+			mql.addEventListener('change', debouncedUpdate)
+			return mql
+		})
 
 		return () => {
-			window.removeEventListener('resize', handleResize);
-			clearTimeout(timeoutId);
-		};
-	}, [debounceDelay]);
+			window.removeEventListener('resize', debouncedUpdate)
+			mediaQueryLists.forEach(mql => {
+				mql.removeEventListener('change', debouncedUpdate)
+			})
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current)
+			}
+		}
+	}, [updateDevice])
 
-	return screenSize;
-};
+	const adaptiveValue = useCallback(
+		<T extends number | string>(
+			values: {
+				phone?: T
+				tablet?: T
+				laptop?: T
+				desktop?: T
+				default?: T
+			},
+			options?: {
+				inherit?: 'down' | 'up' | 'none'
+				smooth?: boolean
+				unit?: 'px' | 'rem' | string
+			}
+		): T | string => {
+			const { inherit = 'down', smooth = false, unit } = options || {}
 
-// Дополнительные утилиты для удобства
-export const useIsMobile = (): boolean => {
-	const { isMobile } = useScreen();
-	return isMobile;
-};
+			const cacheKey = getCacheKey(values, options, currentDevice)
+			const cachedValue = cache.get(cacheKey)
+			if (cachedValue !== undefined) {
+				return cachedValue
+			}
 
-export const useIsTablet = (): boolean => {
-	const { isTablet } = useScreen();
-	return isTablet;
-};
+			const deviceValues: Partial<Record<DeviceType, T>> = {}
 
-export const useIsLaptop = (): boolean => {
-	const { isLaptop } = useScreen();
-	return isLaptop;
-};
+			deviceValues.phone = values.phone
+			deviceValues.tablet = values.tablet
+			deviceValues.laptop = values.laptop
+			deviceValues.desktop = values.desktop
 
-export const useIsDesktop = (): boolean => {
-	const { isDesktop } = useScreen();
-	return isDesktop;
-};
+			if (smooth) {
+				const numericDevices = deviceOrder.filter(device =>
+					deviceValues[device] !== undefined && typeof deviceValues[device] === 'number'
+				)
 
-export const useIsTouch = (): boolean => {
-	const { isTouch } = useScreen();
-	return isTouch;
-};
+				if (numericDevices.length >= 2) {
+					for (let i = 0; i < deviceOrder.length; i++) {
+						const device = deviceOrder[i]
+						if (deviceValues[device] !== undefined) continue
 
-export const useDeviceType = (): DeviceType => {
-	const { deviceType } = useScreen();
-	return deviceType;
-};
+						let lowerDevice: DeviceType | undefined
+						let lowerValue: number | undefined
+						let upperDevice: DeviceType | undefined
+						let upperValue: number | undefined
+
+						for (let j = i; j >= 0; j--) {
+							const prevDevice = deviceOrder[j]
+							const val = deviceValues[prevDevice]
+							if (val !== undefined && typeof val === 'number') {
+								lowerDevice = prevDevice
+								lowerValue = val
+								break
+							}
+						}
+
+						for (let j = i; j < deviceOrder.length; j++) {
+							const nextDevice = deviceOrder[j]
+							const val = deviceValues[nextDevice]
+							if (val !== undefined && typeof val === 'number') {
+								upperDevice = nextDevice
+								upperValue = val
+								break
+							}
+						}
+
+						if (lowerDevice && upperDevice && lowerValue !== undefined && upperValue !== undefined) {
+							const lowerIndex = getDeviceIndex(lowerDevice)
+							const upperIndex = getDeviceIndex(upperDevice)
+							const ratio = (i - lowerIndex) / (upperIndex - lowerIndex)
+							const interpolatedValue = interpolate(lowerValue, upperValue, ratio)
+							deviceValues[device] = interpolatedValue as T
+						}
+					}
+				}
+			}
+
+			if (values.default !== undefined) {
+				for (const device of deviceOrder) {
+					if (deviceValues[device] === undefined) {
+						deviceValues[device] = values.default
+					}
+				}
+			}
+
+			if (inherit !== 'none') {
+				const isUp = inherit === 'up'
+				const orderedDevices = isUp ? [...deviceOrder].reverse() : deviceOrder
+
+				let lastValue: T | undefined
+
+				for (const device of orderedDevices) {
+					if (deviceValues[device] !== undefined) {
+						lastValue = deviceValues[device]
+					} else if (lastValue !== undefined) {
+						deviceValues[device] = lastValue
+					}
+				}
+			}
+
+			let result = deviceValues[currentDevice]
+
+			if (result === undefined) {
+				const fallback = values.default !== undefined ? values.default : '' as T
+				result = fallback
+			}
+
+			if (unit && typeof result === 'number') {
+				result = `${result}${unit}` as T
+			}
+
+			cache.set(cacheKey, result)
+
+			return result
+		},
+		[currentDevice]
+	)
+
+	const bools = useMemo(() => ({
+		isPhone: currentDevice === 'phone',
+		isTablet: currentDevice === 'tablet',
+		isLaptop: currentDevice === 'laptop',
+		isDesktop: currentDevice === 'desktop',
+	}), [currentDevice])
+
+	const min = useCallback((device: DeviceType, strict?: boolean) => {
+		const currentIndex = getDeviceIndex(currentDevice)
+		const targetIndex = getDeviceIndex(device)
+		return strict ? currentIndex > targetIndex : currentIndex >= targetIndex
+	}, [currentDevice])
+
+	const max = useCallback((device: DeviceType, strict?: boolean) => {
+		const currentIndex = getDeviceIndex(currentDevice)
+		const targetIndex = getDeviceIndex(device)
+		return strict ? currentIndex < targetIndex : currentIndex <= targetIndex
+	}, [currentDevice])
+
+	const isMatch = useCallback((from: DeviceType, to?: DeviceType) => {
+		if (!to) return currentDevice === from
+		const fromIndex = getDeviceIndex(from)
+		const toIndex = getDeviceIndex(to)
+		const minIndex = Math.min(fromIndex, toIndex)
+		const maxIndex = Math.max(fromIndex, toIndex)
+		const currentIndex = getDeviceIndex(currentDevice)
+		return currentIndex >= minIndex && currentIndex <= maxIndex
+	}, [currentDevice])
+
+	return {
+		...bools,
+		isTouch: bools.isPhone || bools.isTablet,
+		isPointer: bools.isLaptop || bools.isDesktop,
+		currentDevice,
+		min,
+		max,
+		isMatch,
+		adaptiveValue,
+	}
+}
+
+// Компонент DeviceSlot
+export const DeviceSlot = ({ match, children, fallback }: DeviceSlotProps) => {
+	const { currentDevice } = useScreen()
+
+	const shouldRender = useMemo(
+		() => checkMatch(match, currentDevice),
+		[match, currentDevice]
+	)
+
+	if (!shouldRender) {
+		return fallback || null
+	}
+
+	if (typeof children === 'function') {
+		return children(currentDevice)
+	}
+
+	return children
+}

@@ -1,23 +1,23 @@
 {
 	"folders": [
 		{
-			"name": "⚙️ Config",
+			"name": "⚙️ CONFIG-FILES",
 			"path": "."
 		},
 		{
-			"name": "🎨 Assets",
+			"name": "🎨 PUBLIC-ASSETS",
 			"path": "public"
 		},
 		{
-			"name": "🔀 Router",
+			"name": "🔀 APP-ROUTER",
 			"path": "src/app"
 		},
 		{
-			"name": "🧱 Components",
+			"name": "🧱 COMPONENTS",
 			"path": "src/components"
 		},
 		{
-			"name": "⚡ Core",
+			"name": "⚡ CORE-SRC",
 			"path": "src"
 		}
 	],

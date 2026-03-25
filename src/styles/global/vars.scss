@@ -164,6 +164,8 @@ $palette: (
 	'green': #43875E,
 	'red': #C83939,
 	'gray': #808080,
+	'light-purple': #ABA2F3,
+	'purple': #6732AD,
 );
 
 @function palette($name) {
@@ -179,7 +181,7 @@ $colors: (
 	b: #000,
 	w: #fff,
 	plain: palette('white'),
-	primary: palette('orange'),
+	primary: palette('purple'),
 	second: palette('gray'),
 	heavy: palette('black'),
 	danger: palette('red'),

@@ -1,14 +1,13 @@
 'use client'
-import { disableDevLogs } from '@/scripts';
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useInsertionEffect } from 'react';
 
 export const callOpsProvider = ({ children }: { children?: ReactNode }) => {
 
-	useEffect(() => {
-		disableDevLogs(); // отключить лишние логи
+	useInsertionEffect(() => {
+		// console.log('test')
 	}, [])
 
 	return (<>{children}</>)
 }
 
-export default callOpsProvider;
+export default callOpsProvider; 

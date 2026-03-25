@@ -1,11 +1,10 @@
-'use client';
 import { ReactNode } from 'react';
-import { reduxProvider } from './index';
-import callOpsProvider from './CallOpsProvider';
+import { reduxProvider, callOpsProvider, MountProvider } from './index';
 
 const providers = [
 	callOpsProvider,
 	reduxProvider,
+	MountProvider,
 ];
 
 export const AppProviders = ({ children }: { children?: ReactNode }) => {

@@ -1,0 +1,26 @@
+:where(.container){
+  margin: {
+    right: auto;
+    left: auto;
+  };
+}
+
+:where(._full){
+  padding: {
+    left: var(--spacing);
+    right: var(--spacing);
+  };
+}
+
+
+.container {
+  width: calc(100% - (var(--spacing) * 2));
+  max-width: calc(var(--max-w));
+
+  &._full {
+    width: 100%;
+    max-width: calc(var(--max-w) + (var(--spacing) * 2));
+  }
+}
+
+

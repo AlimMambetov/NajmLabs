@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   env: {
     APP_VERSION: process.env.npm_package_version,
+    NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
   },
   logging: {
     fetches: {
@@ -13,8 +14,8 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // Убрать все логи при билде
-  compiler: {
+
+  compiler: {  // Убрать все логи при билде
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
@@ -31,10 +32,10 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
 
-  // Добавляем поддержку импорта MD файлов
+
   turbopack: {
     rules: {
-      '*.md': {
+      '*.md': {  // Добавляем поддержку импорта MD файлов
         loaders: ['raw-loader'], // Используем установленный raw-loader
         as: '*.js',
       },

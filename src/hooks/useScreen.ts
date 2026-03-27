@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect, useRef, useCallback, useMemo, ReactNode } from 'react'
 
 export const breakpoints = {

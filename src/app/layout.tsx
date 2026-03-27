@@ -2,12 +2,23 @@ import type { Metadata } from "next";
 import "@/styles/index.scss";
 import { AppProviders } from "./_providers";
 import { fonts } from "@/scripts/fonts";
-import { Particles } from "@/components/layout";
+import { Footer, Header, Particles } from "@/components/layout";
+import { CSSProperties } from "react";
+
+const overlayStyles = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  zIndex: -1,
+  pointerEvents: 'none'
+} as CSSProperties
 
 
 export const metadata: Metadata = {
-  title: "NajmLabs",
-  description: "",
+  title: "NajmLabs | Cтудия разработки IT-продуктов",
+  description: "Разработка корпоративных сайтов, бизнес-приложений, создание игровых проектов и профессиональный дизайн.",
 };
 
 export default async function RootLayout({
@@ -24,9 +35,16 @@ export default async function RootLayout({
       </head>
       <body>
         <AppProviders>
+
+          <Header />
           {children}
+          <Footer />
+
+          <div id="modals" />
+          <div id="overlay" style={overlayStyles}>
+            <Particles variant={1} />
+          </div>
         </AppProviders>
-        <Particles variant={1} />
       </body>
     </html>
   </>);

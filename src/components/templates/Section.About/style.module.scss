@@ -1,0 +1,173 @@
+.wrap{
+
+}
+
+
+
+.list{
+	display: flex;
+	flex-direction: column;
+	gap: 200px;
+
+	@include device('tablet'){
+		gap: 120px;
+	}
+}
+
+
+.item{
+	position: relative;
+
+	&:nth-child(2n){
+		.image{
+			font-size: 10px;
+			right: auto;
+			left: 0;
+			rotate: -10deg;
+			width: 38em;
+			padding: 4em;
+			border-radius: 4em;
+			animation: scaleAnim 3s ease-in-out infinite;
+
+			@include device('tablet'){
+				font-size: 6.5px;
+			}
+			
+		}
+
+
+		.content{
+			justify-self: end;
+			align-self: end;
+		}
+
+
+		[data-border]{
+			position: absolute;
+			display: block;
+			inset: 0;
+			width: 100%; height: 100%;
+			border: 0.4em solid transparent;
+			background: #1a1a2e;
+			overflow: hidden;
+			z-index: -1;
+			border-radius: inherit;
+
+
+			&::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(-0deg, hue(primary), hue(heavy));
+				background-size: 200% 200%;
+			border-radius: inherit;
+				animation: gradientMove 3s ease infinite;
+				z-index: -2; /* Увеличиваем z-index */
+			}
+
+			/* Дополнительный слой для фона */
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0.3em; /* Отступ равен толщине border */
+			background: linear-gradient(-125deg, #2d0e57 , #1a0b2e 80%);
+			border-radius: inherit;
+			z-index: -1;
+			}
+		}
+
+		
+
+		[data-line]{
+			position: absolute;
+			inset: 0;
+			width: 100%; height: 100%;
+			border-radius: inherit;
+			border: 0.3em solid hue(primary, 0.4);
+			animation: pseudoPulse 2s infinite linear;
+			z-index: -1;
+		}
+
+		[data-line='2']{
+			animation-delay: 1s;
+		}
+	}
+}
+
+@keyframes pseudoPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+		border-radius: 100px;
+  }
+}
+
+@keyframes scaleAnim {
+  0%,100% {
+		scale: 1;
+	}
+  50% {
+		scale: 0.9;
+  }
+}
+
+
+.image{
+	position: absolute;
+	right: 0;top: 0;
+	max-width: 550px;
+	translate: 0 -120px;
+
+	@include device('tablet'){
+		max-width: 350px;	
+		translate: 50px -60px;
+	}
+
+	@include device('tablet'){
+		opacity: 0.4;
+	}
+
+	img{
+		width: 100%;
+	}
+}
+
+
+.content{
+	display: grid;
+	grid-template-columns: min-content 1fr;
+	max-width: 520px;
+	gap: 30px 20px;
+	align-items: center;
+	position: relative;
+	z-index: 1;
+
+	@include device('tablet'){
+		max-width: 400px;
+	}
+}
+
+.subtitle{
+	font-size: 32px;	
+	@include device('tablet'){
+		font-size: 24px;
+	}
+
+	span{
+		@include gradient-text(linear-gradient(to right, hue(heavy), hue(primary)));
+	}
+}
+
+.desc{	
+	grid-column: 1/-1;
+	font-size: 20px;
+	color: hue(second);
+
+	@include device('tablet'){
+		font-size: 16px;
+	}
+}

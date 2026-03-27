@@ -1,0 +1,62 @@
+@use "sass:map";
+@use "sass:list";
+
+$palette: (
+	'white': #FEFDFF,
+	'black': #282A2C,
+	'gold':#ffbf65,
+	'gray': #C4C4C4,
+	'light-purple': #ABA2F3,
+	'purple': #6732AD,
+);
+
+@function palette($name) {
+	@if not map.has-key($palette, $name) {
+		@error "Ключ `#{$name}` не найден. Доступные ключи. Доступные цвета: #{map.keys($palette)}";
+	}
+
+	@return map.get($palette, $name);
+}
+
+
+$colors: (
+	b: #000,
+	w: #fff,
+	plain: palette('white'),
+	primary: palette('gold'),
+	second: palette('gray'),
+	heavy: palette('light-purple'),
+	// danger: palette('red'),
+	// success: palette('green'),
+);
+
+
+@function hue($name: "b", $a: 1) {
+	@if not map.has-key($colors, $name) {
+		@error "Ключ `#{$name}` не найден. Доступные ключи: #{map.keys($colors)}";
+	}
+
+	@return rgba(map.get($colors, $name), $a);
+}
+
+
+@function tint($color, $percent: 0) {
+    @if $percent > 0 {
+        // Осветление: смешиваем с белым
+        @return color-mix(in srgb, $color, white calc($percent * 1%));
+    } @else if $percent < 0 {
+        // Затемнение: смешиваем с черным
+        $darken-percent: abs($percent);
+        @return color-mix(in srgb, $color, black calc($darken-percent * 1%));
+    } @else {
+        @return $color;
+    }
+}
+
+// --------------------- set root color vars
+
+// :root {
+// 	@each $key, $value in $colors {
+// 		--clr-#{$key} : #{$value};
+// 	}
+// }

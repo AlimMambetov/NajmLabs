@@ -1,0 +1,127 @@
+
+.wrap{
+	display: grid;
+	grid-template-columns: 600px 1fr;
+
+	@include device('tablet'){
+		display: flex;
+		flex-direction: column-reverse;
+		justify-content: start;
+		align-items: center;
+		text-align: center;
+		height: 80vh;
+	}
+}
+
+
+.content{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 30px;	
+	
+}
+
+
+.title{
+	color: hue(heavy);
+	font-family: var(--title-font);
+	font-weight: 700;
+	font-size: 46px;
+
+	
+	@include device('tablet'){
+		font-size: 34px;
+	}
+
+	@include device('phone'){
+		font-size: 26px;
+	}
+}
+
+.desc{
+	color: hue(second);
+	font-size: 20px;
+
+		
+	@include device('tablet'){
+		font-size: 16px;
+	}
+	@include device('phone'){
+		br{display: none;}
+	}
+}
+
+
+.subtitle{
+	color: hue(heavy);
+	font-size: 20px;
+	font-weight: 500;
+	@include gradient-text(linear-gradient(to right, hue(heavy), hue(primary) 70%));
+	
+	@include device('phone'){
+		font-size: 18px;
+	}
+}
+
+
+.circle{
+	width: 100%;
+	translate: 50px;
+	scale: 1.1;
+
+	
+	@include device('tablet'){
+		scale: 1;
+		translate: 0;
+		max-width: 500px;
+	}
+}
+
+
+
+.btn{
+	align-self: start;
+	background: linear-gradient(to right, rgba($color: #503884, $alpha: 0.4), rgba($color: #685EB6, $alpha: 0.4)  80%);
+	color: hue(plain);
+	font-size: 20px;
+	border-radius: 16px;
+	font-weight: 500;
+	padding: 16px 40px;
+	user-select: none;
+	margin-top: 40px;
+	letter-spacing: 0.05em;
+	border: 1px solid hue(second, 0.3);
+	backdrop-filter: blur(3px);
+	transition: all 0.3s ease;
+	overflow: hidden;
+
+	@include device('tablet'){
+		align-self: center;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		transition: left 0.5s ease;
+	}
+
+
+	&:hover{
+		background: linear-gradient(to right, rgba($color: #503884, $alpha: 0.7), rgba($color: #685EB6, $alpha: 0.7) 80%);
+		box-shadow: 0 0 20px rgba(80, 56, 132, 0.5);
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: translateY(-2px);
+	}
+
+}
+
+.btn:hover::before {
+	transition-delay: 0.2s;
+	left: 100%;
+}

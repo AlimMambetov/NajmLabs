@@ -50,6 +50,14 @@
 	align-items: center;
 }
 
+@mixin gradient-text($gradient) {
+	background: $gradient;
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+}
+
+
 
 @mixin flex-col($gap: 0px, $a: '', $b: '') {
 	display: flex;

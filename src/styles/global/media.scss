@@ -1,0 +1,98 @@
+@use "sass:map";
+
+$viewport: (
+	desktop: 1920px,
+	laptop: 1440px,
+	tablet: 1024px,
+	phone: 480px,
+);
+
+// Основной миксин для медиа-запросов
+@mixin device($breakpoint, $type: "max") {
+	// Проверяем существует ли брейкпоинт
+	@if map.has-key($viewport, $breakpoint) {
+		$width: map.get($viewport, $breakpoint);
+		
+		@if $type == "max" {
+			@media (max-width: $width) {
+				@content;
+			}
+		}
+		@else if $type == "min" {
+			@media (min-width: $width) {
+				@content;
+			}
+		}
+		@else if $type == "between" {
+			@error "Для 'between' используйте миксин 'respond-between'";
+		}
+		@else {
+			@error "Неизвестный тип медиа-запроса: #{$type}. Используйте 'min' или 'max'";
+		}
+	}
+	@else {
+		@error "Брейкпоинт '#{$breakpoint}' не найден в карте \$viewport";
+	}
+}
+
+// Миксин для диапазона между двумя брейкпоинтами
+@mixin device-between($start, $end) {
+	@if map.has-key($viewport, $start) and map.has-key($viewport, $end) {
+		$start-width: map.get($viewport, $start);
+		$end-width: map.get($viewport, $end);
+		
+		@media (min-width: $start-width) and (max-width: $end-width) {
+			@content;
+		}
+	}
+	@else {
+		@error "Один из брейкпоинтов '#{$start}' или '#{$end}' не найден в карте \$viewport";
+	}
+}
+
+// Миксин для минимальной ширины
+@mixin device-min($breakpoint) {
+	@include device($breakpoint, "min") {
+		@content;
+	}
+}
+
+// Миксин для максимальной ширины
+@mixin device-max($breakpoint) {
+	@include device($breakpoint, "max") {
+		@content;
+	}
+}
+
+// Пример использования:
+/*
+.example {
+	width: 100%;
+	
+	// Для экранов меньше phone (мобильные)
+	@include device-max(phone) {
+		padding: 10px;
+	}
+	
+	// Для экранов больше desktop
+	@include device-min(desktop) {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+	
+	// Для экранов между tablet и desktop
+	@include device-between(tablet, desktop) {
+		padding: 20px;
+	}
+	
+	// Для планшетов
+	@include device-max(tablet) {
+		font-size: 14px;
+	}
+	
+	// Для десктопов
+	@include device-min(laptop) {
+		display: flex;
+	}
+}
+*/

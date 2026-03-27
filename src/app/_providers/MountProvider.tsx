@@ -10,7 +10,7 @@ const Loader = () => {
 		alignItems: 'center',
 		height: '100vh',
 		width: '100vw',
-		backgroundColor: 'rgb(1, 1, 1)',
+		backgroundColor: '#18072e',
 		color: 'white',
 		position: 'fixed',
 		top: 0,
@@ -126,6 +126,7 @@ export const MountProvider = ({ children }: { children?: ReactNode }) => {
 			<AnimatePresence>
 				{renderContent && (
 					<motion.div
+						style={{ display: 'contents' }}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.5, delay: timeout / 1000, ease: "easeOut" }}

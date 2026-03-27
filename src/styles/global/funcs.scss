@@ -1,1 +1,25 @@
 @use "sass:map";
+@use "sass:list";
+
+
+
+@function z($name) {
+	$z-indexes: (
+		'hidden': -1,
+		'base': 0,
+		'block': 10,
+		'pin': 20,
+		'overlay': 30,
+		'modal': 40,
+		'notice': 50,
+		'max': 9999
+	);
+
+	@if map.has-key($z-indexes, $name) {
+		@return map.get($z-indexes, $name);
+	}
+
+	@else {
+		@error 'Ключ `#{$name}` не найден. Доступные ключи: #{map.keys($z-indexes)}';
+	}
+}

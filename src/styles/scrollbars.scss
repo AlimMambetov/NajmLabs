@@ -1,21 +1,23 @@
 @use "@/styles/global/vars.scss" as *;
 @use "@/styles/global/mixins.scss" as *;
 @use "@/styles/global/funcs.scss" as *;
+@use "@/styles/global/media.scss" as *;
+@use "@/styles/global/colors.scss" as *;
 
 ::-webkit-scrollbar {
 	width: 6px;
 	height: 6px;
 	border-radius: 0;
 	display: block;
-	background-color: hue(plain);
+	background-color: hue(plain, 0.1);
 
-	@include is('phone') {
+	@include device('phone') {
 		width: 3px;
 		height: 3px;
 	}
 }
 
 ::-webkit-scrollbar-thumb {
-	background: hue(primary);
+	background: hue(heavy, 0.5);
 	border-radius: 0;
 }

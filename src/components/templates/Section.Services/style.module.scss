@@ -1,0 +1,28 @@
+
+
+
+.orbit{
+	position: relative;
+	height: 400px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.planet {
+	position: absolute;
+	cursor: pointer;
+
+
+	&__content{
+		width: 150px;
+		height: 150px;
+		background: #4f46e5;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 50px;
+		border-radius: 50%;
+	}
+}

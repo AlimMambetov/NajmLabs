@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import path from 'path';
 
+const globalStyles = ['vars', 'funcs', 'mixins', 'media', 'colors'];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: false,
@@ -21,11 +23,9 @@ const nextConfig: NextConfig = {
 
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
-    prependData: `
-      @use "@/styles/global/vars.scss" as *;
-      @use "@/styles/global/mixins.scss" as *;
-      @use "@/styles/global/funcs.scss" as *;
-    `,
+    prependData: globalStyles
+      ?.map(file => `@use "@/styles/global/${file}.scss" as *;`)
+      .join('\n'),
   },
 
   images: {

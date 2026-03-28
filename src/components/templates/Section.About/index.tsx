@@ -41,13 +41,13 @@ export const SectionAbout = (props: any) => {
 						<li key={i} className={cls.item}>
 							<div className={cls.content}>
 								<div className={`${cls.icon} icon-box`}>
-									<img src={`/images/${el.icon}`} alt={el.title} />
+									<img src={`/images/${el.icon}`} alt={el.title} data-icon={el.icon} />
 								</div>
 								<h3 className={cls.subtitle}>{el.title}<br /><span>{el.subtitle}</span></h3>
 								<p className={cls.desc}>{el.desc}</p>
 							</div>
-							<div className={cls.image}>
-								<img src={`/images/${el.image}`} alt={el.title} />
+							<div className={cls.image} data-img={el.image}>
+								<img src={`/images/${el.image}`} alt={el.image} />
 								{el.type === 'func' && <>
 									<span data-border />
 									<span data-line='1' />

@@ -79,7 +79,7 @@ body {
 	font-size: 50px;
 	position: relative;
 	padding-left: 0.4em;
-	margin-bottom: 80px;
+	margin-bottom: 1.8em;
 
 	&::after{
 		content: '';
@@ -87,9 +87,13 @@ body {
 		left: 0;top: 0;
 		height: 100%;
 		width: 0.18em;
-		border-radius: 10px;
+		border-radius: 0.2em;
 		background: linear-gradient(to top, hue(heavy), hue(primary));
 	}
+
+		@include device('phone'){
+			font-size: 38px;
+		}
 }
 
 
@@ -104,6 +108,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	border-radius: 2em;
+	backdrop-filter: blur(2px);
 
 	span{
 		font-size: 4em;
@@ -112,12 +117,13 @@ body {
 	}
 
 	img{
-		width: 5em;
-		height: 5em;
+		$size: 4.5em;
+		width: $size;
+		height: $size;
 	}
 
 	@include device('tablet'){
-		font-size: 8px;
+		font-size: 7px;
 	}
 }
 

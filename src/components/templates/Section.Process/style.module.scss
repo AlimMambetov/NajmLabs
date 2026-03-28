@@ -12,14 +12,35 @@
 .item{
 	position: relative;
 	padding-left: 120px;
-		@include device('tablet'){
-		padding-left: 90px;
+
+	@include device('tablet'){
+		padding-left: 75px;
+	}
+	@include device('phone'){
+		padding-left: 0;
+		padding-top: 200px;
 	}
 }
 
 .index{
 	position: absolute;
 	left: 0;top: 0;
+
+	@include device('phone'){
+		font-size: 10px;
+		top: -2em;
+		left: 0em;
+		opacity: 0.6;
+	}
+}
+
+
+.item{  
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) .image{
+      animation-delay: #{$i * 1}s;
+    }
+  }
 }
 
 
@@ -27,6 +48,17 @@
 	position: absolute;
 	top: 0;right: 0;
 	height: 380px;
+	animation: light 3s ease infinite;
+
+	@keyframes light {
+		0%,100% {			
+			filter: drop-shadow(0px 0px 20px rgba(255, 255, 255, 1));
+		}
+		50% {
+			filter: drop-shadow(0px 0px 20px rgba(255, 255, 255, 0.2));
+		}
+	}
+
 	img{
 		width: auto;
 		height: 100%;
@@ -36,6 +68,10 @@
 .vector{
 	position: absolute;
 	// opacity: 0;
+	
+	@include device('phone'){
+		display: none;
+	}
 }
 
 .content{
@@ -61,6 +97,7 @@
 .subtitle{
 	font-size: 24px;
 	color: hue(heavy);
+	font-weight: 600;
 }
 
 .desc, .result{
@@ -77,6 +114,9 @@
 .image, .vector{
 	@include device('tablet'){
 		opacity: 0.3;
+	}
+	@include device('phone'){
+		opacity: 1;
 	}
 }
 
@@ -115,4 +155,39 @@
 	right: 0;bottom: 0;
 	translate: -320px 260px;
 	rotate: -40deg;
+}
+
+
+
+.item:first-child{
+	
+	@include device('phone'){
+		padding-top: 250px;
+	}
+}
+
+.item .image{
+	@include device('phone'){
+		height: 250px;
+		right: 0;top: 0;
+		bottom: auto;
+		translate: 0 -40px !important;
+
+
+
+		[alt="analys.svg"]{
+			translate: 0 10px !important;
+		}
+		[alt="design.svg"]{
+			translate: 0 -30px !important;
+		}
+		[alt="dev.svg"]{
+			translate: 0 -0px !important;
+			scale: 1.1;
+		}
+		[alt="start.svg"]{
+			translate: 10px -10px !important;
+			scale: 1.05;
+		}
+	}
 }

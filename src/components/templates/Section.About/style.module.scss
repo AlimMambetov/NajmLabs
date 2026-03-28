@@ -12,6 +12,28 @@
 	@include device('tablet'){
 		gap: 120px;
 	}
+	@include device('phone'){
+		gap: 320px;
+	}
+}
+
+
+.item:first-child{
+	@include device('phone'){
+	padding-top: 320px;
+	}
+}
+
+@include device('phone'){
+	.image[data-img="space-1.svg"]{
+		translate: 0px -10px !important;
+	}
+	.image[data-img="func.svg"]{
+		translate: 120px -300px !important;
+	}
+	.image[data-img="space-2.svg"]{
+		translate: -30px -300px !important;
+	}
 }
 
 
@@ -28,6 +50,8 @@
 			padding: 4em;
 			border-radius: 4em;
 			animation: scaleAnim 3s ease-in-out infinite;
+			filter: brightness();
+			opacity: 0.7;
 
 			@include device('tablet'){
 				font-size: 6.5px;
@@ -116,11 +140,26 @@
 }
 
 
+.icon [data-icon="AI.svg"]{
+	scale: 0.8;
+}
+
 .image{
 	position: absolute;
 	right: 0;top: 0;
 	max-width: 550px;
 	translate: 0 -120px;
+	animation: light 3s ease infinite;
+
+
+	@keyframes light {
+		0%,100% {
+			filter: drop-shadow(0px 0px 50px rgba(252, 190, 106, 0.8));
+		}
+		50% {
+			filter: drop-shadow(0px 0px 50px rgba(252, 190, 106, 0.2));
+		}
+	}
 
 	@include device('tablet'){
 		max-width: 350px;	
@@ -129,6 +168,9 @@
 
 	@include device('tablet'){
 		opacity: 0.4;
+	}
+	@include device('phone'){
+		opacity: 0.8;
 	}
 
 	img{
@@ -148,6 +190,9 @@
 
 	@include device('tablet'){
 		max-width: 400px;
+	}
+	@include device('tablet'){			
+		gap: 16px 10px;
 	}
 }
 

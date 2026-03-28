@@ -82,6 +82,34 @@ const CONFIG = {
 		lineWidth: 1,
 		fadeSpeed: 0.05,
 	},
+
+	// Настройки качества canvas
+	quality: {
+		pixelRatio: 2,
+		enableAntiAlias: true,
+	},
+};
+
+// Функция для определения мобильного устройства
+const isMobileDevice = () => {
+	// Проверяем touch events
+	const hasTouchScreen = (
+		'ontouchstart' in window ||
+		(navigator.maxTouchPoints > 0) ||
+		// @ts-ignore
+		(navigator.msMaxTouchPoints > 0)
+	);
+
+	// Проверяем user agent для дополнительной надежности
+	const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+	const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+	const isMobileUA = mobileRegex.test(userAgent);
+
+	// Проверяем ширину экрана
+	const isSmallScreen = window.innerWidth <= 768;
+
+	// Если есть touch screen и (UA мобильный или экран маленький) - считаем мобильным
+	return hasTouchScreen && (isMobileUA || isSmallScreen);
 };
 
 export const Variant_1 = () => {
@@ -91,6 +119,7 @@ export const Variant_1 = () => {
 	const lastShowerTime = useRef<number>(Date.now());
 	const showerStarsQueue = useRef<ShootingStar[]>([]);
 	const lastShowerStarTime = useRef<number>(0);
+	const isMobile = useRef<boolean>(false);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
@@ -99,20 +128,63 @@ export const Variant_1 = () => {
 		const ctx = canvas.getContext('2d');
 		if (!ctx) return;
 
+		// Определяем мобильное устройство
+		isMobile.current = isMobileDevice();
+
+		// На мобильных устройствах отключаем созвездия
+		if (isMobile.current) {
+			CONFIG.constellations.enabled = false;
+			console.log('Мобильное устройство обнаружено, эффект созвездий отключен');
+		} else {
+			CONFIG.constellations.enabled = true;
+		}
+
+		// Устанавливаем pixel ratio
+		CONFIG.quality.pixelRatio = window.devicePixelRatio || 2;
+
+		// Включаем сглаживание для лучшего качества
+		if (CONFIG.quality.enableAntiAlias) {
+			ctx.imageSmoothingEnabled = true;
+			ctx.imageSmoothingQuality = 'high';
+		}
+
 		let particles: Particle[] = [];
 		let shootingStars: ShootingStar[] = [];
 		let animationId: number;
 
+		// Функция для обновления размера canvas с учетом pixel ratio
+		const resizeCanvas = () => {
+			const pixelRatio = CONFIG.quality.pixelRatio; // Берем наше увеличенное значение
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+
+			// Устанавливаем реальные размеры canvas в пикселях (УВЕЛИЧЕННЫЕ)
+			canvas.width = width * pixelRatio;   // Например, 1920 * 2 = 3840px
+			canvas.height = height * pixelRatio; // 1080 * 2 = 2160px
+
+			// CSS размеры остаются обычными
+			canvas.style.width = `${width}px`;
+			canvas.style.height = `${height}px`;
+
+			// Масштабируем контекст, чтобы рисовать в увеличенном разрешении
+			ctx.scale(pixelRatio, pixelRatio);
+
+			initParticles();
+		};
+
 		// Инициализация звезд с рандомной прозрачностью
 		const initParticles = () => {
 			particles = [];
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+
 			for (let i = 0; i < CONFIG.background.starsCount; i++) {
 				const opacity = CONFIG.background.starMinOpacity +
 					Math.random() * (CONFIG.background.starMaxOpacity - CONFIG.background.starMinOpacity);
 
 				particles.push({
-					x: Math.random() * canvas.width,
-					y: Math.random() * canvas.height,
+					x: Math.random() * width,
+					y: Math.random() * height,
 					radius: CONFIG.background.starMinRadius +
 						Math.random() * (CONFIG.background.starMaxRadius - CONFIG.background.starMinRadius),
 					speedX: (Math.random() - 0.5) * 0.1,
@@ -124,6 +196,9 @@ export const Variant_1 = () => {
 
 		// Создание падающей звезды с рандомной прозрачностью
 		const createShootingStar = (angle?: number, x?: number, y?: number, speed?: number, isFromShower: boolean = false) => {
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+
 			const finalAngle = angle !== undefined
 				? angle
 				: CONFIG.stars.baseAngle + (Math.random() - 0.5) * CONFIG.stars.angleVariation;
@@ -138,7 +213,7 @@ export const Variant_1 = () => {
 			}
 
 			return {
-				x: x !== undefined ? x : Math.random() * canvas.width,
+				x: x !== undefined ? x : Math.random() * width,
 				y: y !== undefined ? y : -10,
 				length: CONFIG.stars.minLength + Math.random() * (CONFIG.stars.maxLength - CONFIG.stars.minLength),
 				speed: speed !== undefined
@@ -151,10 +226,11 @@ export const Variant_1 = () => {
 
 		// Создание звездопада
 		const createStarShower = () => {
+			const width = window.innerWidth;
 			const starCount = CONFIG.starShower.minStars +
 				Math.floor(Math.random() * (CONFIG.starShower.maxStars - CONFIG.starShower.minStars + 1));
 			const baseAngle = CONFIG.stars.baseAngle + (Math.random() - 0.5) * CONFIG.starShower.angleVariation;
-			const startX = Math.random() * canvas.width;
+			const startX = Math.random() * width;
 			const startY = -20 - Math.random() * 30;
 
 			const stars: ShootingStar[] = [];
@@ -201,18 +277,22 @@ export const Variant_1 = () => {
 
 		// Обновление падающей звезды
 		const updateShootingStar = (star: ShootingStar) => {
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+
 			star.x += Math.cos(star.angle) * star.speed;
 			star.y += Math.sin(star.angle) * star.speed;
 			star.opacity -= CONFIG.stars.fadeSpeed;
 
 			return star.opacity > 0 &&
-				star.x < canvas.width + 200 &&
+				star.x < width + 200 &&
 				star.x > -200 &&
-				star.y < canvas.height + 200;
+				star.y < height + 200;
 		};
 
-		// Рисование линий между звездами
+		// Рисование линий между звездами (только для десктопа)
 		const drawConstellations = () => {
+			// На мобильных устройствах не рисуем созвездия
 			if (!CONFIG.constellations.enabled) return;
 			if (!mousePos.current) return;
 
@@ -267,9 +347,11 @@ export const Variant_1 = () => {
 			}
 		};
 
-		// Обработка движения мыши
+		// Обработка движения мыши (только для десктопа)
 		const handleMouseMove = (e: MouseEvent) => {
-			mousePos.current = { x: e.clientX, y: e.clientY };
+			if (!isMobile.current) {
+				mousePos.current = { x: e.clientX, y: e.clientY };
+			}
 		};
 
 		const handleMouseLeave = () => {
@@ -280,24 +362,22 @@ export const Variant_1 = () => {
 		const animate = () => {
 			if (!ctx || !canvas) return;
 
-			// ВАЖНО: Очищаем canvas цветом фона из конфига
-			ctx.fillStyle = CONFIG.background.color;
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			const width = window.innerWidth;
+			const height = window.innerHeight;
 
-			// Добавляем дополнительный fade эффект для хвостов (опционально)
-			// Если нужен эффект "хвостов" от звезд, раскомментируйте:
-			// ctx.fillStyle = `rgba(0, 0, 0, ${CONFIG.background.fadeEffect})`;
-			// ctx.fillRect(0, 0, canvas.width, canvas.height);
+			// Очищаем canvas цветом фона из конфига
+			ctx.fillStyle = CONFIG.background.color;
+			ctx.fillRect(0, 0, width, height);
 
 			// Обновляем и рисуем звезды
 			particles.forEach(star => {
 				star.x += star.speedX;
 				star.y += star.speedY;
 
-				if (star.x < 0) star.x = canvas.width;
-				if (star.x > canvas.width) star.x = 0;
-				if (star.y < 0) star.y = canvas.height;
-				if (star.y > canvas.height) star.y = 0;
+				if (star.x < 0) star.x = width;
+				if (star.x > width) star.x = 0;
+				if (star.y < 0) star.y = height;
+				if (star.y > height) star.y = 0;
 
 				// Рисуем звезду с прозрачностью
 				ctx.beginPath();
@@ -306,7 +386,7 @@ export const Variant_1 = () => {
 				ctx.fill();
 			});
 
-			// Рисуем созвездия
+			// Рисуем созвездия (только для десктопа)
 			drawConstellations();
 
 			// Логика звездопада
@@ -364,25 +444,30 @@ export const Variant_1 = () => {
 			animationId = requestAnimationFrame(animate);
 		};
 
-		// Настройка размера canvas
-		const handleResize = () => {
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			initParticles();
-		};
-
-		handleResize();
+		// Инициализация
+		resizeCanvas();
 		animate();
 
-		window.addEventListener('resize', handleResize);
+		// Добавляем обработчик для изменения ориентации экрана
+		const handleOrientationChange = () => {
+			setTimeout(() => {
+				resizeCanvas();
+			}, 100);
+		};
+
+		window.addEventListener('resize', () => {
+			resizeCanvas();
+		});
 		window.addEventListener('mousemove', handleMouseMove);
 		window.addEventListener('mouseleave', handleMouseLeave);
+		window.addEventListener('orientationchange', handleOrientationChange);
 
 		return () => {
 			cancelAnimationFrame(animationId);
-			window.removeEventListener('resize', handleResize);
+			window.removeEventListener('resize', resizeCanvas);
 			window.removeEventListener('mousemove', handleMouseMove);
 			window.removeEventListener('mouseleave', handleMouseLeave);
+			window.removeEventListener('orientationchange', handleOrientationChange);
 		};
 	}, []);
 
@@ -397,7 +482,6 @@ export const Variant_1 = () => {
 				height: '100%',
 				zIndex: -1,
 				pointerEvents: 'none',
-				// Убираем backgroundColor из CSS, теперь фон рисуется на canvas
 			}}
 		/>
 	);

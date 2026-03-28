@@ -63,7 +63,7 @@ export const SectionProcess = (props: any) => {
 							<p className={cls.result}>{item.result}</p>
 						</div>
 						<div className={cls.image}>
-							<img src={`/images/process/${item.image}`} alt={item.title} />
+							<img src={`/images/process/${item.image}`} alt={item.image} />
 						</div>
 						{index !== data.length - 1 && (
 							<div className={cls.vector} data-vector={index + 1}>

@@ -55,6 +55,10 @@ body {
 
 
 .glass-box{
+	
+}
+
+:where(.glass-box){
 	--p: 30px 80px;
 	--r: 30px;
 	background: linear-gradient(132.86deg, rgba(33, 17, 54, 0.8) 10%, rgba(67, 35, 119, 0.4) 100%);
@@ -71,7 +75,6 @@ body {
 		--r: 20px;
 	}
 }
-
 
 
 

@@ -65,7 +65,7 @@ const CONFIG = {
 		color: '#18072e',                // Цвет фона (темно-синий для примера)
 		starColor: 'rgba(255, 255, 255, ', // Цвет обычных звезд
 		constellationColor: 'rgba(150, 180, 255, ',
-		starsCount: 250,
+		starsCount: 550,
 		fadeEffect: 0.3,
 		starMinOpacity: 0.2,
 		starMaxOpacity: 0.9,
@@ -77,8 +77,8 @@ const CONFIG = {
 	constellations: {
 		enabled: true,
 		maxOpacity: 0.6,
-		influenceRadius: 180,
-		maxDistance: 120,
+		influenceRadius: 120,
+		maxDistance: 150,
 		lineWidth: 1,
 		fadeSpeed: 0.05,
 	},
@@ -177,8 +177,8 @@ export const Variant_1 = () => {
 			particles = [];
 			const width = window.innerWidth;
 			const height = window.innerHeight;
-
-			for (let i = 0; i < CONFIG.background.starsCount; i++) {
+			const countStars = (isMobile.current ? CONFIG.background.starsCount / 4 : CONFIG.background.starsCount);
+			for (let i = 0; i < countStars; i++) {
 				const opacity = CONFIG.background.starMinOpacity +
 					Math.random() * (CONFIG.background.starMaxOpacity - CONFIG.background.starMinOpacity);
 
@@ -229,7 +229,10 @@ export const Variant_1 = () => {
 			const width = window.innerWidth;
 			const starCount = CONFIG.starShower.minStars +
 				Math.floor(Math.random() * (CONFIG.starShower.maxStars - CONFIG.starShower.minStars + 1));
-			const baseAngle = CONFIG.stars.baseAngle + (Math.random() - 0.5) * CONFIG.starShower.angleVariation;
+			const baseAngle = isMobile.current
+				? Math.PI / 3 + (Math.random() - 0.5) * 0.3  // ~60 градусов для более горизонтального полета
+				: CONFIG.stars.baseAngle + (Math.random() - 0.5) * CONFIG.starShower.angleVariation;
+
 			const startX = Math.random() * width;
 			const startY = -20 - Math.random() * 30;
 
@@ -480,7 +483,7 @@ export const Variant_1 = () => {
 				left: 0,
 				width: '100%',
 				height: '100%',
-				zIndex: -1,
+				zIndex: -1000,
 				pointerEvents: 'none',
 			}}
 		/>

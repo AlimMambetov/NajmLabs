@@ -1,46 +1,19 @@
 'use client'
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence, MotionProps } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Container } from '@/components/layout';
 import cls from './style.module.scss';
 import { Icon } from '@/components/ui';
+import servicesJSON from '&/data/services.json';
+import { useScreen } from '@/hooks';
 
 export const SectionServices = (props: any) => {
+	const { isPointer } = useScreen();
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [targetIndex, setTargetIndex] = useState(null);
-	const items = [
-		{
-			title: "Mobile",
-			icon: "mobile",
-			desc: "Превращаем идеи в мобильные хиты: от MVP до enterprise-решений, которыми пользуются ежедневно",
-			list: ["Разработка под iOS/Android с упором на производительность", "Кроссплатформенные решения (Flutter, React Native) для быстрого запуска", "Полный цикл: от идеи и прототипа до публикации в Store", "Интеграция с любыми API, CRM и эквайрингом", "Глубокая проработка UX/UI для удержания пользователей"]
-		},
-		{
-			title: "DESKTOP",
-			icon: "pc",
-			desc: "Тяжелая артиллерия для вашего бизнеса: создаем ПО, которое управляет процессами, оборудованием и данными.",
-			list: ["Высоконагруженные приложения для Windows и macOS", "Реализация сложной бизнес-логики и парсинг данных", "Интеграция с профильным оборудованием (кассы, станки, сканеры)", "Кроссплатформенные десктоп-решения (C++, C#, Electron)", "Тонкая настройка под требования конкретных индустрий"]
-		},
-		{
-			title: "Геймдев",
-			icon: "keyboard",
-			desc: "Создаем миры, в которые хочется возвращаться. От гиперказуальных хитов до сложных RPG и бизнес-симуляторов.",
-			list: ["Разработка мобильных игр (iOS, Android) с высоким retention", "Браузерные игры и проекты для PC (Unity, Unreal Engine)", "Создание бизнес-симуляторов и serious games для обучения сотрудников", "Качественная 2D/3D графика, персонажная анимация и VFX", "Внедрение систем монетизации и аналитики (AppsFlyer, Firebase)"]
-		},
-		{
-			title: "WEB",
-			icon: "laptop",
-			desc: "Строим цифровые экосистемы, которые автоматизируют продажи и экономят ресурсы.",
-			list: ["Промо-сайты и лендинги с высоким коэффициентом конверсии", "Сложные веб-сервисы, порталы и кабинеты для партнеров", "Интернет-магазины с безупречной логистикой и юзабилити", "Микросервисная архитектура и работа с высокими нагрузками (HighLoad)", "Внутренняя SEO-оптимизация для быстрого роста в поиске"]
-		},
-		{
-			title: "UI/UX-дизайн",
-			icon: "figma",
-			desc: "Проектируем интерфейсы, которые не нужно объяснять. Дизайн, ведущий пользователя за руку к целевому действию.",
-			list: ["Прототипирование и CJM (Customer Journey Map) для снижения рисков", "Адаптивный UI-дизайн для сайтов, мобильных и десктоп-приложений", "Разработка дизайн-систем и гайдлайнов для масштабирования продукта", "Брендинг и создание визуальной айдентики с нуля", "Дизайн лендингов с фокусом на конверсию (CRO)"]
-		},
-	];
+	const items = servicesJSON || [];
+
 
 	useEffect(() => {
 		if (targetIndex !== null && targetIndex !== activeIndex) {
@@ -70,47 +43,154 @@ export const SectionServices = (props: any) => {
 		const totalItems = items.length;
 		const angle = ((itemIndex - currentIndex) / totalItems) * Math.PI * 2;
 
-		const radiusX = 300;
-		const radiusY = -150;
+		const radiusX = isPointer ? 250 : 160;
+		const radiusY = isPointer ? -200 : -90;
 
 		const x = Math.sin(angle) * radiusX;
-		const y = Math.cos(angle) * radiusY;
-		const scale = 0.3 + (Math.cos(angle) + 1) * 0.2;
+		const y = Math.cos(angle) * (isPointer ? radiusY : -radiusY);
+		const scale = 1.3;
 		const zIndex = Math.floor((Math.cos(angle) + 1) * 50) + 10;
 
 		return { x, y, scale, zIndex };
 	};
 
+	// Animation variants for content
+	const bias: number = 60;
+	const contentVariants = {
+		enter: (direction: number) => ({
+			x: direction > 0 ? -bias / 3 : bias,
+			opacity: 0,
+		}),
+		center: {
+			x: 0,
+			opacity: 1,
+		},
+		exit: (direction: number) => ({
+			x: direction > 0 ? bias : -bias / 3,
+			opacity: 0,
+		}),
+	};
+
+	const transition = {
+		type: 'spring',
+		damping: 30,
+		stiffness: 300,
+	} as MotionProps;
+
+	const [direction, setDirection] = useState(0);
+
+	const handlePrev = () => {
+		setDirection(-1);
+		handleItemClick((activeIndex - 1 + items.length) % items.length);
+	};
+
+	const handleNext = () => {
+		setDirection(1);
+		handleItemClick((activeIndex + 1) % items.length);
+	};
+
 	return (
-		<Container id='services' className={cls.wrap}>
+		<Container as='section' id='services' className={cls.wrap}>
+			<h2 className={`${cls.title} title`}>Наши услуги</h2>
 
-			<div className={cls.orbit} >
-				{items.map((item: any, i) => {
-					const { x, y, scale, zIndex } = getEllipticalPosition(i, activeIndex);
+			<div className={cls.grid}>
+				<div className={cls.orbit} >
+					<div className={cls.orbit__center}>
+						<Icon as={'logo'} />
+					</div>
+					<div className={cls.orbit__planets}>
+						{items.map((item: any, i) => {
+							const { x, y, scale, zIndex } = getEllipticalPosition(i, activeIndex);
 
-					return (
-						<motion.div
-							key={i}
-							style={{
-								position: 'absolute',
-								zIndex: zIndex,
-								cursor: 'pointer',
-							}}
-							animate={{ x, y, scale }}
-							transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-							onClick={() => handleItemClick(i)}
-							className={cls.planet}
-						>
-							<div className={cls.planet__content}>
-								<Icon as={item.icon} />
-							</div>
-						</motion.div>
-					);
-				})}
+							return (
+								<motion.div
+									key={i}
+									style={{
+										position: 'absolute',
+										zIndex: zIndex,
+										cursor: 'pointer',
+									}}
+									animate={{ x, y, scale }}
+									transition={transition}
+									onClick={() => handleItemClick(i)}
+									className={cls.planet}
+									data-active={i === activeIndex || null}
+								>
+									<div className={cls.planet__content}>
+										<Icon as={item.icon} />
+									</div>
+								</motion.div>
+							);
+						})}
+					</div>
 
-				<button onClick={() => handleItemClick((activeIndex + 1) % items.length)}>Вперед</button>
-				<button onClick={() => handleItemClick((activeIndex - 1 + items.length) % items.length)}>Назад</button>
+				</div>
+
+
+				<motion.div className={`${cls.info} glass-box`}>
+					<div className={cls.info__head}>
+						<div className={`${cls.info__icon} `}>
+							<Icon as={items[activeIndex].icon as any} />
+						</div>
+						<AnimatePresence mode="wait" custom={direction}>
+							<motion.h3
+								key={activeIndex}
+								custom={direction}
+								variants={contentVariants}
+								initial="enter"
+								animate="center"
+								exit="exit"
+								transition={transition}
+								className={`${cls.info__title}`}
+							>
+								{items[activeIndex].title}
+							</motion.h3>
+						</AnimatePresence>
+					</div>
+					<div className={cls.info__main}>
+						<AnimatePresence mode="wait" custom={direction}>
+							<motion.p
+								key={`desc-${activeIndex}`}
+								custom={direction}
+								variants={contentVariants}
+								initial="enter"
+								animate="center"
+								exit="exit"
+								transition={transition}
+								className={`${cls.info__desc}`}
+							>
+								{items[activeIndex].desc}
+							</motion.p>
+						</AnimatePresence>
+						<AnimatePresence mode="wait" custom={direction}>
+							<motion.ul
+								key={`list-${activeIndex}`}
+								custom={direction}
+								variants={contentVariants}
+								initial="enter"
+								animate="center"
+								exit="exit"
+								transition={{
+									...transition,
+									delay: 0.1
+								}}
+								className={`${cls.info__list}`}
+							>
+								<h4 className={cls.info__subtitle}>Что мы делаем:</h4>
+								{items[activeIndex].list.map((item: any, i: number) => (
+									<li className={`${cls.info__item}`} key={i}>{item}</li>
+								))}
+							</motion.ul>
+						</AnimatePresence>
+					</div>
+					<div className={cls.info__foot}>
+						<motion.button whileTap={{ scale: 0.9 }} onClick={handlePrev}><Icon as='arrow-L' /></motion.button>
+						<motion.button whileTap={{ scale: 0.9 }} onClick={handleNext}><Icon as='arrow-R' /></motion.button>
+					</div>
+				</motion.div>
 			</div>
+
+
 		</Container>
 	);
 }

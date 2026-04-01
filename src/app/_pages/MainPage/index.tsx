@@ -5,6 +5,7 @@ import {
 	SectionAbout,
 	SectionContact,
 	SectionHero,
+	SectionPortfolio,
 	SectionProcess,
 	SectionServices,
 	SectionsFAQ,
@@ -19,7 +20,8 @@ export const MainPage = (props: any) => {
 			<SectionHero />
 			<SectionAbout />
 			<SectionProcess />
-			{/* <SectionServices /> */}
+			<SectionServices />
+			<SectionPortfolio />
 			<SectionsStack />
 			<SectionContact />
 			<SectionsFAQ />

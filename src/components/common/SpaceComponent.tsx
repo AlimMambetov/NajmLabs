@@ -596,7 +596,7 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 				position: 'relative',
 				width: '100%',
 				height: isMobile ? '500px' : '700px',
-				overflow: 'auto',
+				overflow: 'hidden',
 				touchAction: 'pan-y',
 			}}
 		>

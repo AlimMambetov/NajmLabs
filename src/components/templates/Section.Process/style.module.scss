@@ -98,6 +98,10 @@
 	font-size: 24px;
 	color: hue(heavy);
 	font-weight: 600;
+
+	@include device('phone'){
+		font-size: 16px;
+	}
 }
 
 .desc, .result{

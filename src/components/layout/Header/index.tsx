@@ -31,7 +31,7 @@ const nav = [
 	{
 		id: setId(),
 		title: 'Вопросы',
-		link: '#faq'
+		link: '#FAQ'
 	},
 	{
 		id: setId(),

@@ -8,7 +8,7 @@ export const SectionsStack = (props: any) => {
 
 
 	return (<>
-		<Container id='stack' as='section' className={cls.wrap}>
+		<Container id='steck' as='section' className={cls.wrap}>
 			<h2 className={`title ${cls.title}`}>Стек технологий</h2>
 			<FloatingBalls />
 		</Container>

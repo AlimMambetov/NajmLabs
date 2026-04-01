@@ -101,7 +101,7 @@ const Loader = () => {
 			transition={{ duration: 0.5, ease: "easeInOut" }}
 		>
 			{/* <LoadingComplex /> */}
-			<Particles variant={1} />
+			{/* <Particles variant={1} /> */}
 			<img style={{ width: 'min(50vw, 50vh)' }} src={'/images/logo.svg'} />
 			<h2 style={{ fontSize: 'min(10vw, 10vh)', color: '#a699ef' }} >NajmLabs</h2>
 		</motion.div>

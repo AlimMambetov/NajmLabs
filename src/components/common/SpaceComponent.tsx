@@ -31,7 +31,7 @@ const iconsData = [
 ];
 
 const FloatingBalls: React.FC<FloatingBallsProps> = ({
-	ballRadius = 45,
+	// ballRadius = 45,
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,9 +43,13 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 	const isDraggingRef = useRef<boolean>(false);
 	const hoveredBallRef = useRef<Ball | null>(null);
 	const wallsRef = useRef<Matter.Body[]>([]);
+	const pixelRatioRef = useRef<number>(1);
+	const timeoutTouchRef = useRef<any>(null);
 
 	const [isMobile, setIsMobile] = useState(false);
 	const ballCount = iconsData.length;
+
+	const ballRadius = isMobile ? 32 : 60;
 
 	// Определяем мобильное устройство
 	useEffect(() => {
@@ -67,6 +71,23 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 
 		let { width, height } = getDimensions();
 
+		// Получаем pixel ratio для высокого DPI
+		const pixelRatio = window.devicePixelRatio || 1;
+		pixelRatioRef.current = pixelRatio;
+
+		// Устанавливаем реальный размер canvas с учетом pixel ratio
+		canvasRef.current.width = width * pixelRatio;
+		canvasRef.current.height = height * pixelRatio;
+		canvasRef.current.style.width = `${width}px`;
+		canvasRef.current.style.height = `${height}px`;
+
+		// Настраиваем контекст для высокого качества
+		const ctx = canvasRef.current.getContext('2d');
+		if (ctx) {
+			ctx.imageSmoothingEnabled = true;
+			ctx.imageSmoothingQuality = 'high';
+		}
+
 		// Создаем движок с оптимизациями для мобильных
 		const engine = Matter.Engine.create();
 		engine.gravity.y = 0;
@@ -75,7 +96,7 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 		engine.velocityIterations = isMobile ? 5 : 10;
 		engineRef.current = engine;
 
-		// Создаем стены
+		// Создаем стены (используем логические размеры для физики)
 		const createWalls = (w: number, h: number) => {
 			const margin = 30;
 			const wallOptions = {
@@ -137,65 +158,61 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 
 		// Создаем тултип
 		let tooltip: HTMLDivElement | null = null;
-		if (!isMobile) {
-			tooltip = document.createElement('div');
-			tooltip.id = 'ball-tooltip';
-			tooltip.style.cssText = `
+		tooltip = document.createElement('div');
+		tooltip.id = 'ball-tooltip';
+		tooltip.style.cssText = `
 				position: fixed;
 				padding: 8px 16px;
 				background: transparent;
 				color: white;
 				border-radius: 0;
-				font-size: 16px;
+				font-size: ${isMobile ? '16px' : '25px'};
 				font-weight: 600;
 				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 				pointer-events: none;
 				z-index: 1000;
 				white-space: nowrap;
 				opacity: 0;
-				transition: opacity 0.2s ease;
-				text-shadow: 0 0 10px rgba(67, 35, 119, 0.8), 0 0 20px rgba(67, 35, 119, 0.6);
+				transition: 0.2s;
+				text-shadow: 0 0 10px rgba(0, 0, 0, 1), 0 0 20px rgba(67, 35, 119, 0.6);
 			`;
-			document.body.appendChild(tooltip);
-		} else {
-			// Для мобильных создаем тултип
-			tooltip = document.createElement('div');
-			tooltip.id = 'ball-tooltip';
-			tooltip.style.cssText = `
-				position: fixed;
-				padding: 12px 20px;
-				background: rgba(0, 0, 0, 0.8);
-				color: white;
-				border-radius: 12px;
-				font-size: 18px;
-				font-weight: 600;
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-				pointer-events: none;
-				z-index: 1000;
-				white-space: nowrap;
-				opacity: 0;
-				transition: opacity 0.2s ease;
-				backdrop-filter: blur(10px);
-				box-shadow: 0 0 20px rgba(67, 35, 119, 0.5);
-			`;
-			document.body.appendChild(tooltip);
-		}
+		document.body.appendChild(tooltip);
+
 		tooltipRef.current = tooltip;
 
 		const updateTooltipPosition = (ball: Ball) => {
 			if (!tooltip || !canvasRef.current) return;
 
 			const canvasRect = canvasRef.current.getBoundingClientRect();
-			const scaleX = canvasRef.current.width / canvasRect.width;
-			const scaleY = canvasRef.current.height / canvasRect.height;
-			const ballCanvasX = ball.body.position.x;
-			const ballCanvasY = ball.body.position.y;
-			const ballScreenX = canvasRect.left + (ballCanvasX / scaleX);
-			const ballScreenY = canvasRect.top + (ballCanvasY / scaleY);
+
+			// Получаем логические координаты шарика
+			const ballLogicalX = ball.body.position.x;
+			const ballLogicalY = ball.body.position.y;
+
+			// Преобразуем в экранные координаты CSS
+			// Так как canvas имеет размер в CSS пикселях, а физика в логических,
+			// то координаты шарика напрямую соответствуют CSS пикселям
+			const ballScreenX = canvasRect.left + ballLogicalX;
+			const ballScreenY = canvasRect.top + ballLogicalY;
+
+			// Для мобильных используем отступ над шариком
+			const offset = isMobile ? ballRadius - 60 : ballRadius + - 125;
 
 			tooltip.style.left = `${ballScreenX - tooltip.offsetWidth / 2}px`;
-			tooltip.style.top = `${ballScreenY + ballRadius + 8}px`;
+			tooltip.style.top = `${ballScreenY - offset}px`; // Показываем над шариком
 			tooltip.textContent = ball.title;
+		};
+
+		// Функция для преобразования экранных координат в логические координаты физики
+		const screenToPhysicsCoords = (clientX: number, clientY: number) => {
+			if (!canvasRef.current) return { x: 0, y: 0 };
+			const rect = canvasRef.current.getBoundingClientRect();
+			const scaleX = canvasRef.current.width / rect.width;
+			const scaleY = canvasRef.current.height / rect.height;
+			const canvasX = (clientX - rect.left) * scaleX;
+			const canvasY = (clientY - rect.top) * scaleY;
+			// Возвращаем логические координаты (делим на pixelRatio)
+			return { x: canvasX / pixelRatio, y: canvasY / pixelRatio };
 		};
 
 		// Кэш для загруженных изображений
@@ -205,6 +222,13 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 			if (!canvasRef.current) return;
 			const ctx = canvasRef.current.getContext('2d');
 			if (!ctx) return;
+
+			// Очищаем canvas с учетом pixel ratio
+			ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+			// Масштабируем контекст для рисования в физических пикселях
+			ctx.save();
+			ctx.scale(pixelRatio, pixelRatio);
 
 			balls.forEach((ball) => {
 				const x = ball.body.position.x;
@@ -253,9 +277,12 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 					ctx.stroke();
 				}
 
-				// Рисуем иконку из кэша
+				// Рисуем иконку из кэша с высоким качеством
 				let img = imageCache.get(ball.icon);
 				if (img && img.complete && img.naturalWidth > 0) {
+					// Включаем высокое качество сглаживания для изображений
+					ctx.imageSmoothingEnabled = true;
+					ctx.imageSmoothingQuality = 'high';
 					ctx.drawImage(img, x - size, y - size, size * 2, size * 2);
 				} else if (!img) {
 					img = new Image();
@@ -275,6 +302,8 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 
 				ctx.restore();
 			});
+
+			ctx.restore();
 		};
 
 		// Оптимизированное поддержание движения
@@ -313,15 +342,13 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 			if (moveTimeout) clearTimeout(moveTimeout);
 			moveTimeout = setTimeout(() => {
 				requestAnimationFrame(() => {
-					const rect = canvasRef.current!.getBoundingClientRect();
-					const scaleX = canvasRef.current!.width / rect.width;
-					const scaleY = canvasRef.current!.height / rect.height;
-					const mouseX = (e.clientX - rect.left) * scaleX;
-					const mouseY = (e.clientY - rect.top) * scaleY;
+					const physicsCoords = screenToPhysicsCoords(e.clientX, e.clientY);
+					const mouseX = physicsCoords.x;
+					const mouseY = physicsCoords.y;
 
 					if (isDraggingRef.current && draggedBall) {
-						const newX = Math.min(Math.max(mouseX, ballRadius + 5), canvasRef.current!.width - ballRadius - 5);
-						const newY = Math.min(Math.max(mouseY, ballRadius + 5), canvasRef.current!.height - ballRadius - 5);
+						const newX = Math.min(Math.max(mouseX, ballRadius + 5), width - ballRadius - 5);
+						const newY = Math.min(Math.max(mouseY, ballRadius + 5), height - ballRadius - 5);
 						Matter.Body.setPosition(draggedBall, { x: newX, y: newY });
 						if (hoveredBallRef.current && tooltip) updateTooltipPosition(hoveredBallRef.current);
 					}
@@ -354,11 +381,9 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 
 		const handleMouseDown = (e: MouseEvent) => {
 			if (!canvasRef.current || isMobile) return;
-			const rect = canvasRef.current.getBoundingClientRect();
-			const scaleX = canvasRef.current.width / rect.width;
-			const scaleY = canvasRef.current.height / rect.height;
-			const mouseX = (e.clientX - rect.left) * scaleX;
-			const mouseY = (e.clientY - rect.top) * scaleY;
+			const physicsCoords = screenToPhysicsCoords(e.clientX, e.clientY);
+			const mouseX = physicsCoords.x;
+			const mouseY = physicsCoords.y;
 
 			for (const ball of balls) {
 				const dx = ball.body.position.x - mouseX;
@@ -382,11 +407,9 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 		const handleMouseUp = (e: MouseEvent) => {
 			if (!canvasRef.current || isMobile) return;
 			if (isDraggingRef.current && draggedBall) {
-				const rect = canvasRef.current!.getBoundingClientRect();
-				const scaleX = canvasRef.current!.width / rect.width;
-				const scaleY = canvasRef.current!.height / rect.height;
-				const mouseX = (e.clientX - rect.left) * scaleX;
-				const mouseY = (e.clientY - rect.top) * scaleY;
+				const physicsCoords = screenToPhysicsCoords(e.clientX, e.clientY);
+				const mouseX = physicsCoords.x;
+				const mouseY = physicsCoords.y;
 				const dx = mouseX - dragStartPoint.x;
 				const dy = mouseY - dragStartPoint.y;
 
@@ -416,18 +439,14 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 			}
 		};
 
-		// Обработчики для мобильных (без preventDefault)
+		// Обработчики для мобильных - исправлено с правильным преобразованием координат
 		const handleTouchStartMobile = (e: TouchEvent) => {
 			if (!canvasRef.current || !isMobile) return;
 
-			// Не вызываем preventDefault, чтобы скролл работал
-			const rect = canvasRef.current.getBoundingClientRect();
-			const scaleX = canvasRef.current.width / rect.width;
-			const scaleY = canvasRef.current.height / rect.height;
 			const touch = e.touches[0];
-
-			const touchX = (touch.clientX - rect.left) * scaleX;
-			const touchY = (touch.clientY - rect.top) * scaleY;
+			const physicsCoords = screenToPhysicsCoords(touch.clientX, touch.clientY);
+			const touchX = physicsCoords.x;
+			const touchY = physicsCoords.y;
 
 			// Находим шарик под пальцем
 			let touchedBall: Ball | null = null;
@@ -461,14 +480,15 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 		};
 
 		const handleTouchEndMobile = () => {
+			clearTimeout(timeoutTouchRef.current)
 			if (!isMobile) return;
 			// Убираем подсветку через 2 секунды
-			setTimeout(() => {
+			timeoutTouchRef.current = setTimeout(() => {
 				if (hoveredBallRef.current && tooltip) {
 					hoveredBallRef.current = null;
 					tooltip.style.opacity = '0';
 				}
-			}, 2000);
+			}, 5000);
 		};
 
 		// Добавляем обработчики
@@ -478,7 +498,6 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 			window.addEventListener('mouseup', handleMouseUp);
 			canvasRef.current.addEventListener('mouseleave', handleMouseLeave);
 		} else {
-			// Убираем passive: false, чтобы не блокировать скролл
 			canvasRef.current.addEventListener('touchstart', handleTouchStartMobile);
 			canvasRef.current.addEventListener('touchend', handleTouchEndMobile);
 		}
@@ -488,8 +507,8 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 			canvas: canvasRef.current,
 			engine: engine,
 			options: {
-				width,
-				height,
+				width: canvasRef.current.width,
+				height: canvasRef.current.height,
 				wireframes: false,
 				background: 'transparent',
 			},
@@ -513,10 +532,17 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 			if (!containerRef.current || !canvasRef.current || !engineRef.current) return;
 			const newWidth = containerRef.current.clientWidth;
 			const newHeight = containerRef.current.clientHeight;
-			canvasRef.current.width = newWidth;
-			canvasRef.current.height = newHeight;
-			render.options.width = newWidth;
-			render.options.height = newHeight;
+			const newPixelRatio = window.devicePixelRatio || 1;
+			pixelRatioRef.current = newPixelRatio;
+
+			// Обновляем размер canvas с учетом pixel ratio
+			canvasRef.current.width = newWidth * newPixelRatio;
+			canvasRef.current.height = newHeight * newPixelRatio;
+			canvasRef.current.style.width = `${newWidth}px`;
+			canvasRef.current.style.height = `${newHeight}px`;
+
+			render.options.width = canvasRef.current.width;
+			render.options.height = canvasRef.current.height;
 
 			Matter.World.remove(engineRef.current.world, wallsRef.current);
 			const newWalls = createWalls(newWidth, newHeight);
@@ -569,9 +595,9 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 			style={{
 				position: 'relative',
 				width: '100%',
-				height: '70vh',
+				height: isMobile ? '500px' : '700px',
 				overflow: 'auto',
-				touchAction: 'pan-y', // Разрешаем вертикальный скролл
+				touchAction: 'pan-y',
 			}}
 		>
 			<canvas
@@ -581,7 +607,7 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({
 					height: '100%',
 					display: 'block',
 					cursor: isMobile ? 'pointer' : 'grab',
-					touchAction: isMobile ? 'pan-y' : 'none', // На мобильных разрешаем скролл
+					touchAction: isMobile ? 'pan-y' : 'none',
 				}}
 			/>
 		</div>

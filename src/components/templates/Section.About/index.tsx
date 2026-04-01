@@ -32,7 +32,7 @@ export const SectionAbout = (props: any) => {
 
 
 	return (<>
-		<Container id='about' className={cls.wrap}>
+		<Container as='section' id='about' className={cls.wrap}>
 			<h2 className={`${cls.title} title`}>О нас</h2>
 
 			<ul className={cls.list}>

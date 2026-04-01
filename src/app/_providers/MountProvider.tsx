@@ -1,6 +1,7 @@
 'use client'
 import React, { ReactNode, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Particles } from '@/components/layout';
 
 const Loader = () => {
 	const styles = {
@@ -99,7 +100,10 @@ const Loader = () => {
 			exit={{ opacity: 0 }}
 			transition={{ duration: 0.5, ease: "easeInOut" }}
 		>
-			<LoadingComplex />
+			{/* <LoadingComplex /> */}
+			<Particles variant={1} />
+			<img style={{ width: 'min(50vw, 50vh)' }} src={'/images/logo.svg'} />
+			<h2 style={{ fontSize: 'min(10vw, 10vh)', color: '#a699ef' }} >NajmLabs</h2>
 		</motion.div>
 	);
 }

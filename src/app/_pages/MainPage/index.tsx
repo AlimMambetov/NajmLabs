@@ -1,7 +1,16 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { SectionAbout, SectionHero, SectionProcess, SectionServices } from '@/components/templates';
+import {
+	SectionAbout,
+	SectionContact,
+	SectionHero,
+	SectionProcess,
+	SectionServices,
+	SectionsFAQ,
+	SectionsStack,
+
+} from '@/components/templates';
 
 
 export const MainPage = (props: any) => {
@@ -11,6 +20,9 @@ export const MainPage = (props: any) => {
 			<SectionAbout />
 			<SectionProcess />
 			{/* <SectionServices /> */}
+			<SectionsStack />
+			<SectionContact />
+			<SectionsFAQ />
 		</main>
 	</>)
 }

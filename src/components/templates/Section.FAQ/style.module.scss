@@ -1,0 +1,58 @@
+.wrap{
+	display: grid;
+	grid-template-columns: 0.7fr 1fr;
+	gap: 30px;
+
+
+	@include device('tablet'){
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+
+
+.titles{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	.title{
+		margin-bottom: 0;
+	}
+
+	.subtitle{
+		font-size: 30px;
+		color: hue(heavy);
+		
+		@include device('tablet'){
+			max-width: 400px;
+		}
+	}
+	
+	
+	[alt=decor]{
+		width: 100%;
+
+		
+		@include device('tablet'){
+			align-self: end;
+			margin: -130px 0;
+			translate: 100px;
+			width: 100%;
+			max-width: 600px;
+		}
+
+		@include device('phone'){
+			margin: -90px 0;
+		}
+	}
+}
+
+.accordion{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}

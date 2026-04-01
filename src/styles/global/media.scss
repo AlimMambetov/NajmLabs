@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:list";
 
 $viewport: (
 	desktop: 1920px,
@@ -23,11 +24,71 @@ $viewport: (
 				@content;
 			}
 		}
+		@else if $type == "only" {
+			// Определяем диапазон для конкретного устройства
+			$prev-breakpoint: null;
+			$next-breakpoint: null;
+			
+			// Получаем все брейкпоинты в порядке возрастания
+			$breakpoints: (
+				phone: map.get($viewport, phone),
+				tablet: map.get($viewport, tablet),
+				laptop: map.get($viewport, laptop),
+				desktop: map.get($viewport, desktop)
+			);
+			
+			// Находим предыдущий и следующий брейкпоинты
+			$breakpoint-keys: map.keys($breakpoints);
+			$current-index: list.index($breakpoint-keys, $breakpoint);
+			
+			@if $current-index {
+				// Предыдущий брейкпоинт (для min-width)
+				@if $current-index > 1 {
+					$prev-key: list.nth($breakpoint-keys, $current-index - 1);
+					$prev-breakpoint: map.get($breakpoints, $prev-key);
+				}
+				
+				// Следующий брейкпоинт (для max-width)
+				@if $current-index < list.length($breakpoint-keys) {
+					$next-key: list.nth($breakpoint-keys, $current-index + 1);
+					$next-breakpoint: map.get($breakpoints, $next-key);
+				}
+			}
+			
+			// Формируем медиа-запрос для конкретного устройства
+			@if $breakpoint == phone {
+				// phone: от 0 до phone
+				@media (max-width: map.get($viewport, phone)) {
+					@content;
+				}
+			}
+			@else if $breakpoint == tablet {
+				// tablet: от phone до tablet
+				@media (min-width: map.get($viewport, phone)) and (max-width: map.get($viewport, tablet)) {
+					@content;
+				}
+			}
+			@else if $breakpoint == laptop {
+				// laptop: от tablet до laptop
+				@media (min-width: map.get($viewport, tablet)) and (max-width: map.get($viewport, laptop)) {
+					@content;
+				}
+			}
+			@else if $breakpoint == desktop {
+				// desktop: от desktop и выше
+				@media (min-width: map.get($viewport, desktop)) {
+					@content;
+				}
+			}
+			@else {
+				@error "Для типа 'only' поддерживаются только основные брейкпоинты: phone, tablet, laptop, desktop";
+			}
+		}
 		@else if $type == "between" {
-			@error "Для 'between' используйте миксин 'respond-between'";
+			@error "Для 'between' используйте миксин 'device-between'";
 		}
 		@else {
-			@error "Неизвестный тип медиа-запроса: #{$type}. Используйте 'min' или 'max'";
+			@error "Неизвестный тип медиа-запроса: #{$type}. Используйте 'min', 'max' или 'only'";
 		}
 	}
 	@else {
@@ -64,35 +125,9 @@ $viewport: (
 	}
 }
 
-// Пример использования:
-/*
-.example {
-	width: 100%;
-	
-	// Для экранов меньше phone (мобильные)
-	@include device-max(phone) {
-		padding: 10px;
-	}
-	
-	// Для экранов больше desktop
-	@include device-min(desktop) {
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-	
-	// Для экранов между tablet и desktop
-	@include device-between(tablet, desktop) {
-		padding: 20px;
-	}
-	
-	// Для планшетов
-	@include device-max(tablet) {
-		font-size: 14px;
-	}
-	
-	// Для десктопов
-	@include device-min(laptop) {
-		display: flex;
+// Миксин для конкретного устройства
+@mixin device-only($breakpoint) {
+	@include device($breakpoint, "only") {
+		@content;
 	}
 }
-*/

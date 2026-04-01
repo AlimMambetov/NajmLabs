@@ -12,7 +12,7 @@ export const CirlceAnim = ({ className, ...props }: any) => {
 			{circle_arr.map((item, index) => {
 				const direction = index % 2 === 0 ? 'left' : 'right';
 				const isFirst = index === 0;
-				const speeds = [6, 34, 38, 30, 50, 46];
+				const speeds = [6, 90, 58, 30, 100, 46];
 				const speed = speeds[index] || 10;
 
 				return (

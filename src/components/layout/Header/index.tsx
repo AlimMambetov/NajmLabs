@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import cls from './style.module.scss';
 import { Container } from '@/components/layout';
-import { setId } from '@/scripts';
+import { scrollToElement, setId } from '@/scripts';
 import { Icon } from '@/components/ui';
 import { useScreen } from '@/hooks';
 
@@ -36,7 +36,7 @@ const nav = [
 	{
 		id: setId(),
 		title: 'Контакты',
-		link: '#contacts'
+		link: '#contact'
 	},
 ];
 
@@ -47,19 +47,6 @@ export const Header = (props: any) => {
 
 	const toggleMenu = () => menuIsOpenSetter(prev => !prev);
 
-	const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
-		e.preventDefault();
-		menuIsOpenSetter(false);
-		const element = document.querySelector(hash);
-		if (element) {
-			element.scrollIntoView({
-				behavior: 'smooth',
-				block: 'start',
-			});
-			// Обновляем URL без перезагрузки
-			window.history.pushState(null, '', hash);
-		}
-	};
 
 	return (
 		<Container as='header' className={`glass-box ${cls.header}`}>
@@ -72,7 +59,7 @@ export const Header = (props: any) => {
 					<a
 						key={item.id}
 						href={item.link}
-						onClick={(e) => handleScroll(e, item.link)}
+						onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
 					>
 						{item.title}
 					</a>

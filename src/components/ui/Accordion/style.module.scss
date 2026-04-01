@@ -1,0 +1,78 @@
+$text-color: hue(second);
+$title-color: hue(plain);
+$bg: linear-gradient(132.86deg, rgba(33, 17, 54, 0.6) 10%, rgba(67, 35, 119, 0.3) 100%);
+
+
+:where(.wrap){
+	width: clamp(320px, 100%, 700px);;
+}
+
+
+.wrap{
+	--pv: 10px;
+	--ph: 20px;
+	display: inline-flex;
+	flex-direction: column;
+	border-radius: 20px;
+	background: $bg;
+	backdrop-filter: blur(3px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+
+
+	@include device('phone'){
+		--pv: 10px;
+		--ph: 12px;
+	}
+
+
+	&[data-open]{
+		svg{
+			scale: 1 -1;
+			translate: 0 -10%;
+		}
+	}
+}
+
+.label{
+	padding: var(--pv) var(--ph) ;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1em;
+	cursor: pointer;
+	color: $title-color;
+	font-size: 20px;
+	user-select: none;
+
+	svg{
+		width: 1em;
+		height: 1em;
+		min-width: 1em;
+		min-height: 1em;
+		font-size: 40px;
+		transition: 0.2s;
+	}
+
+
+	@include device('phone'){
+		font-size: 14px;
+	}
+}	
+
+
+.content{
+	height: 0;
+	overflow: hidden;
+	color: $text-color;
+	font-size: 16px;
+	white-space: pre-line;
+
+	@include device('phone'){
+		font-size: 12px;
+	}
+
+	&__value{
+		padding: var(--pv) var(--ph) ;
+		padding-bottom: 20px;
+	}
+}

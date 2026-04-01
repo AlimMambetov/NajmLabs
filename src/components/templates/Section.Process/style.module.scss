@@ -112,6 +112,10 @@
 
 
 .image, .vector{
+	@include device('laptop', 'only'){
+		opacity: 0.4;	
+	}
+
 	@include device('tablet'){
 		opacity: 0.3;
 	}
@@ -167,6 +171,9 @@
 }
 
 .item .image{
+	
+
+
 	@include device('phone'){
 		height: 250px;
 		right: 0;top: 0;

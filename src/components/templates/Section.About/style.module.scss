@@ -169,6 +169,7 @@
 	@include device('tablet'){
 		opacity: 0.4;
 	}
+	
 	@include device('phone'){
 		opacity: 0.8;
 	}

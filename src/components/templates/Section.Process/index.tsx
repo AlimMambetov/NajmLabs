@@ -50,7 +50,7 @@ export const SectionProcess = (props: any) => {
 
 
 	return (<>
-		<Container id="process" className={cls.wrap}>
+		<Container as='section' id="process" className={cls.wrap}>
 			<h2 className={`${cls.title} title`}>Процесс работы</h2>
 			<ul className={cls.list}>
 				{data.map((item: any, index) => (

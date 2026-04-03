@@ -1,7 +1,6 @@
 'use client'
 import React, { ReactNode, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Particles } from '@/components/layout';
 
 const Loader = () => {
 	const styles = {

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "@/styles/index.scss";
-import { AppProviders } from "./_providers";
+import { AppProviders } from "@/providers";
 import { fonts } from "@/scripts/fonts";
-import { Footer, Header, Particles } from "@/components/layout";
+import { Footer, Header } from "@/components/layout";
 import { CSSProperties } from "react";
+import { Particles } from "@/components/features";
 
 const overlayStyles = {
   position: 'fixed',
@@ -35,7 +36,6 @@ export default async function RootLayout({
       </head>
       <body>
         <AppProviders>
-
           <Header />
           {children}
           <Footer />

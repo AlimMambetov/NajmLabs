@@ -2,9 +2,8 @@
 import React from 'react';
 import { motion, AnimatePresence, MotionProps } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Container } from '@/components/layout';
+import { Container, Icon, LiquidGlass } from '@/components/common';
 import cls from './style.module.scss';
-import { Icon } from '@/components/ui';
 import servicesJSON from '&/data/services.json';
 import { useScreen } from '@/hooks';
 
@@ -43,14 +42,13 @@ export const SectionServices = (props: any) => {
 		const totalItems = items.length;
 		const angle = ((itemIndex - currentIndex) / totalItems) * Math.PI * 2;
 
-		const radiusX = isPointer ? 250 : 160;
-		const radiusY = isPointer ? -200 : -90;
+		const radiusX = isPointer ? 290 : 160;
+		const radiusY = isPointer ? -210 : -110;
 
 		const x = Math.sin(angle) * radiusX;
 		const y = Math.cos(angle) * (isPointer ? radiusY : -radiusY);
-		const scale = 1.3;
-		const zIndex = Math.floor((Math.cos(angle) + 1) * 50) + 10;
-
+		const scale = 1;
+		const zIndex = Math.floor((Math.cos(angle) + 1) * 4.5) + 1;
 		return { x, y, scale, zIndex };
 	};
 
@@ -95,9 +93,10 @@ export const SectionServices = (props: any) => {
 
 			<div className={cls.grid}>
 				<div className={cls.orbit} >
-					<div className={cls.orbit__center}>
+					<img src="/images/orbit.svg" alt="orbit-line" />
+					<LiquidGlass distortion={false} className={cls.orbit__center}>
 						<Icon as={'logo'} />
-					</div>
+					</LiquidGlass>
 					<div className={cls.orbit__planets}>
 						{items.map((item: any, i) => {
 							const { x, y, scale, zIndex } = getEllipticalPosition(i, activeIndex);
@@ -116,9 +115,9 @@ export const SectionServices = (props: any) => {
 									className={cls.planet}
 									data-active={i === activeIndex || null}
 								>
-									<div className={cls.planet__content}>
+									<LiquidGlass distortion={false} className={cls.planet__content}>
 										<Icon as={item.icon} />
-									</div>
+									</LiquidGlass>
 								</motion.div>
 							);
 						})}
@@ -127,7 +126,7 @@ export const SectionServices = (props: any) => {
 				</div>
 
 
-				<motion.div className={`${cls.info} glass-box`}>
+				<LiquidGlass className={`${cls.info} glass-box`}>
 					<div className={cls.info__head}>
 						<div className={`${cls.info__icon} `}>
 							<Icon as={items[activeIndex].icon as any} />
@@ -184,10 +183,14 @@ export const SectionServices = (props: any) => {
 						</AnimatePresence>
 					</div>
 					<div className={cls.info__foot}>
-						<motion.button whileTap={{ scale: 0.9 }} onClick={handlePrev}><Icon as='arrow-L' /></motion.button>
-						<motion.button whileTap={{ scale: 0.9 }} onClick={handleNext}><Icon as='arrow-R' /></motion.button>
+						<motion.button whileTap={{ scale: 0.9 }} onClick={handlePrev}>
+							<Icon whileTap={{ x: -20 }} as='arrow-L' />
+						</motion.button>
+						<motion.button whileTap={{ scale: 0.9 }} onClick={handleNext}>
+							<Icon whileTap={{ x: 20 }} as='arrow-R' />
+						</motion.button>
 					</div>
-				</motion.div>
+				</LiquidGlass>
 			</div>
 
 

@@ -1,8 +1,8 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/layout';
-import FloatingBalls from '@/components/common/SpaceComponent';
+import { Container } from '@/components/common';
+import FloatingBalls from '@/components/features/SpaceComponent';
 
 export const SectionsStack = (props: any) => {
 

@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/layout';
+import { Container } from '@/components/common';
 import { scrollToElement, setId } from '@/scripts';
-import { Icon } from '@/components/ui';
+import { Icon, LiquidGlass } from '@/components/common';
 import { useScreen } from '@/hooks';
 
 
@@ -49,28 +49,48 @@ export const Header = (props: any) => {
 
 
 	return (
-		<Container as='header' className={`glass-box ${cls.header}`}>
-			<div className={cls.logo} onClick={() => window.location.reload()}>
-				<img src="/images/full-logo.svg" alt="NajmLabs" />
-			</div>
+		<Container as='header' className={`${cls.header}`}>
+			<LiquidGlass className={`${cls.header__content} glass-box`}>
+				<div className={cls.logo} onClick={() => window.location.reload()}>
+					<img src="/images/full-logo.svg" alt="NajmLabs" />
+				</div>
 
-			<nav data-open={isTouch ? menuIsOpen : null} className={`${cls.menu} ${isTouch && 'glass-box'}`}>
-				{nav.map((item) => (
-					<a
-						key={item.id}
-						href={item.link}
-						onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
-					>
-						{item.title}
-					</a>
-				))}
-			</nav>
 
-			{isTouch && <Icon
-				as={menuIsOpen ? 'cross' : 'menu'}
-				onClick={toggleMenu}
-				className={cls.menuBtn}
-			/>}
+				{
+					isTouch ?
+						<LiquidGlass data-open={menuIsOpen} className={`${cls.menu} glass-box`}>
+							{nav.map((item) => (
+								<a
+									key={item.id}
+									href={item.link}
+									onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
+								>
+									{item.title}
+								</a>
+							))}
+						</LiquidGlass>
+						:
+						<nav className={cls.menu}>
+							{nav.map((item) => (
+								<a
+									key={item.id}
+									href={item.link}
+									onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
+								>
+									{item.title}
+								</a>
+							))}
+						</nav>
+				}
+
+
+
+				{isTouch && <Icon
+					as={menuIsOpen ? 'cross' : 'menu'}
+					onClick={toggleMenu}
+					className={cls.menuBtn}
+				/>}
+			</LiquidGlass>
 		</Container>
 	);
 };

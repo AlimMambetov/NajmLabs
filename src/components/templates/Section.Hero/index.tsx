@@ -1,9 +1,9 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/layout';
-import { CirlceAnim } from '@/components/common';
+import { CirlceAnim } from '@/components/features';
 import { scrollToElement } from '@/scripts';
+import { Container } from '@/components/common';
 
 export const SectionHero = (props: any) => {
 

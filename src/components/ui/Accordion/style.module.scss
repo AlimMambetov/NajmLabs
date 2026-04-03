@@ -1,6 +1,5 @@
 $text-color: hue(second);
 $title-color: hue(plain);
-$bg: linear-gradient(132.86deg, rgba(33, 17, 54, 0.6) 10%, rgba(67, 35, 119, 0.3) 100%);
 
 
 :where(.wrap){
@@ -14,9 +13,6 @@ $bg: linear-gradient(132.86deg, rgba(33, 17, 54, 0.6) 10%, rgba(67, 35, 119, 0.3
 	display: inline-flex;
 	flex-direction: column;
 	border-radius: 20px;
-	background: $bg;
-	backdrop-filter: blur(3px);
-	border: 1px solid rgba(255, 255, 255, 0.2);
 
 
 	@include device('phone'){

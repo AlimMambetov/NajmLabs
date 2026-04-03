@@ -25,7 +25,7 @@
 
 .info{
 	justify-self: end;
-	min-height: 620px;
+	min-height: 640px;
 	width: clamp(300px, 100%, 500px);
 	display: flex;
 	flex-direction: column;
@@ -49,8 +49,9 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: 1.5em;
-		border: 1px solid hue(second, 0.5);
-		background: hue(heavy, 0.5);
+		background: linear-gradient(45deg, hue(heavy, 0.1), hue(heavy, 0.3));
+		border: 1px solid hue(second, 0.4);
+
 		position: relative;
 		z-index: 5;
 		
@@ -105,7 +106,7 @@
 
 	&__subtitle{
 		font-size: 20px;
-		color: hue(heavy);
+		color: hue(primary);
 		
 		@include device('phone'){
 			font-size: 18px;
@@ -138,20 +139,30 @@
 	&__foot{
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		gap: 10px;
+		justify-content: center;
+		gap: 40px;
 		margin-top: 10px;
 		
 		button{
 			font-size: 20px;
-			width: 100%;
+			width: 4em;
+			height: 4em;
+			aspect-ratio: 1/1;
 			text-align: center;
 			align-content: center;
-			height: 2em;
-			border-radius: 0.4em;
+			border-radius: 50%;
 			color: hue(plain);
-			background-color: hue(heavy, 0.5);
-			border: 1px solid hue(second, 0.5);
+			background: linear-gradient(45deg, hue(heavy, 0.05), hue(heavy, 0.2));
+			border: 1px solid hue(second, 0.4);
+			position: relative;
+		}
+
+		svg{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			padding: 30%;
+			inset: 0;
 		}
 	}
 }
@@ -170,6 +181,23 @@
 	justify-content: center;
 	align-items: center;
 
+	[alt=orbit-line]{
+		position: absolute;
+		// z-index: -1;
+		inset: 0;
+		left: 50%;top: 50%;
+		translate: -50% -46%;
+		width: 100%; height: 100%;
+		scale: 1 0.95;
+
+		@include device('tablet'){
+			width: 340px;
+			height: auto;
+			scale: 1 0.8;
+			translate: -50% -45%;
+		}
+
+	}
 
 
 	@include device('laptop', 'only'){
@@ -188,7 +216,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding-top: 10%;
+		padding-top: 5%;
 
 	}
 
@@ -198,9 +226,17 @@
 		align-items: center;
 		border-radius: 50%;
 		font-size: 80px;
-		width: 2.5em;
+		width: 2em;
 		height: 2em;
 		translate: 0 20%;
+		box-shadow: 0 0 24px hue(primary, 1), inset 0 0 80px hue(b, 0.4);
+		filter: drop-shadow(3px 1px 38px hue(primary, 0.5));
+		 
+		svg{color: hue(primary, 0.8);}
+		
+		&::after{
+			box-shadow: -0.2px 0.3px 1.5px;
+		}
 		
 		@include device('tablet'){
 			font-size: 35px;
@@ -208,13 +244,10 @@
 			// width: 3em;
 		}
 
-		background: linear-gradient(45deg, hue(heavy, 0.5) 0%, rgba(105, 70, 199, 0.6));
-		backdrop-filter: blur(2px);
-		border: 2px solid hue(second, 0.5);
-		box-shadow: 0 0 40px 1px hue(second, 0.6), 0 0 10px 1px hue(second, 0.6),;
+		// box-shadow: 0 0 40px 1px hue(second, 0.6), 0 0 10px 1px hue(second, 0.6),;
 		transition: 0.3s;
 
-		animation: scale-anim 1s ease infinite alternate;
+		// animation: scale-anim 1s ease infinite alternate;
 
 
 
@@ -228,11 +261,6 @@
 		}
 	}
 
-
-	
-	svg{
-		color: hue(plain, 0.9);
-	}
 }
 
 
@@ -243,7 +271,13 @@
 
 	&[data-active] &__content{
 		opacity: 1;
-		transform: scale(1.3);
+		transform: scale(1.6);
+		box-shadow: 0 0 24px hue(heavy);
+		filter: drop-shadow(3px 1px 18px hue(heavy, 1));
+
+		&:before{
+			opacity: 0;
+		}
 	}
 
 
@@ -255,11 +289,17 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		border-radius: 50%;
-		background: linear-gradient(45deg, hue(heavy, 0.5) 0%, rgba(105, 70, 199, 0.6));
-		backdrop-filter: blur(2px);
-		border: 1px solid hue(second, 0.5);
+		border-radius: 50%;	
 		transition: 0.3s;
+
+			&::before{
+				box-shadow:  inset 3px 1px 12px 0px hue(heavy, 0.5);
+			}
+
+
+		&::after{
+			box-shadow: 0.2px 0.1px 1px;
+		}
 
 		@include device('tablet'){
 			font-size: 30px;

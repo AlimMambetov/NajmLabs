@@ -1,0 +1,168 @@
+[
+	{
+		"title": "Корпоративный сайт - СтройИнвест",
+		"desc": "Многостраничный сайт для строительной компании с калькулятором сметы, личным кабинетом клиента и интеграцией с 1С. Разработан на Next.js с адаптивной версткой.",
+		"tags": [
+			"Next.js",
+			"TypeScript",
+			"Tailwind",
+			"Prisma"
+		],
+		"preview": "/portfolio/preview-web.png",
+		"images": [
+			"/portfolio/project-1/1.png",
+			"/portfolio/project-1/2.png",
+			"/portfolio/project-1/3.png"
+		],
+		"videos": [
+			"/portfolio/project-1/demo.mp4"
+		],
+		"links": [
+			{
+				"label": "Посмотреть сайт",
+				"url": "https://example.com/stroiinvest"
+			},
+			{
+				"label": "Документация",
+				"url": "https://docs.example.com/stroiinvest"
+			},
+			{
+				"label": "GitHub",
+				"url": "https://github.com/user/stroiinvest"
+			}
+		]
+	},
+	{
+		"title": "Мобильное приложение - FitTrack",
+		"desc": "iOS/Android приложение для отслеживания тренировок и питания. Подсчет калорий, более 100 упражнений с анимацией, построение графиков прогресса. Офлайн-режим.",
+		"tags": [
+			"React Native",
+			"Redux Toolkit",
+			"Realm",
+			"Firebase"
+		],
+		"preview": "/portfolio/preview-mobile.png",
+		"images": [
+			"/portfolio/project-2/1.png",
+			"/portfolio/project-2/2.png"
+		],
+		"videos": [
+			"/portfolio/project-2/app_demo.mp4",
+			"/portfolio/project-2/onboarding.mp4"
+		],
+		"links": [
+			{
+				"label": "Скачать в App Store",
+				"url": "https://apps.apple.com/app/fittrack"
+			},
+			{
+				"label": "Скачать в Google Play",
+				"url": "https://play.google.com/store/apps/fittrack"
+			},
+			{
+				"label": "GitHub",
+				"url": "https://github.com/user/fittrack"
+			}
+		]
+	},
+	{
+		"title": "Игра - NecroSoul",
+		"desc": "Трехмерный souls-like роглайт с процедурной генерацией уровней. Собственный AI для врагов, система паррирования и прокачка оружия. Разработано на C++ и Blueprints.",
+		"tags": [
+			"Unreal Engine 5",
+			"C++",
+			"Blueprints",
+			"Niagara"
+		],
+		"preview": "/portfolio/preview-game.png",
+		"images": [
+			"/portfolio/project-3/screenshot1.png",
+			"/portfolio/project-3/screenshot2.png",
+			"/portfolio/project-3/screenshot3.png"
+		],
+		"videos": [
+			"/portfolio/project-3/gameplay_trailer.mp4",
+			"/portfolio/project-3/boss_fight.mp4"
+		],
+		"links": [
+			{
+				"label": "Страница в Steam",
+				"url": "https://store.steampowered.com/app/necro-soul"
+			},
+			{
+				"label": "Тизер на YouTube",
+				"url": "https://youtube.com/watch?v=necro-soul"
+			},
+			{
+				"label": "Документация разработчика",
+				"url": "https://docs.necro-soul.com"
+			}
+		]
+	},
+	{
+		"title": "Desktop программа - FileGuard Pro",
+		"desc": "Кроссплатформенное приложение на Electron для автоматического резервного копирования и восстановления данных. Шифрование AES-256, расписание бэкапов, интеграция с облаками (S3, Google Drive).",
+		"tags": [
+			"Electron",
+			"Node.js",
+			"Vue 3",
+			"SQLite"
+		],
+		"preview": "/portfolio/preview-pc.png",
+		"images": [
+			"/portfolio/project-4/main_window.png",
+			"/portfolio/project-4/settings.png",
+			"/portfolio/project-4/backup_log.png"
+		],
+		"videos": [
+			"/portfolio/project-4/tutorial.mp4"
+		],
+		"links": [
+			{
+				"label": "Скачать для Windows",
+				"url": "https://example.com/fileguard/setup.exe"
+			},
+			{
+				"label": "Скачать для macOS",
+				"url": "https://example.com/fileguard/fileguard.dmg"
+			},
+			{
+				"label": "GitHub",
+				"url": "https://github.com/user/fileguard"
+			}
+		]
+	},
+	{
+		"title": "Макеты в Figma - CRM «ЛидерСофт»",
+		"desc": "Полный дизайн-система и 50+ экранов для B2B CRM. Автокомпоненты, переменные для темной/светлой темы, прототипирование всех user flows. Адаптив под десктоп, планшет и мобильные.",
+		"tags": [
+			"Figma",
+			"UI/UX",
+			"Auto Layout",
+			"Design Tokens"
+		],
+		"preview": "/portfolio/preview-figma.png",
+		"images": [
+			"/portfolio/project-5/dashboard.png",
+			"/portfolio/project-5/analytics.png",
+			"/portfolio/project-5/mobile_mockup.png"
+		],
+		"videos": [
+			"/portfolio/project-5/prototype_demo.mp4"
+		],
+		"links": [
+			{
+				"label": "Смотреть макет в Figma",
+				"url": "https://figma.com/file/example"
+			},
+			{
+				"label": "Гайд по дизайн-системе",
+				"url": "https://example.com/design-guide"
+			},
+			{
+				"label": "Презентация для заказчика",
+				"url": "https://example.com/crm-presentation"
+			}
+		]
+	}
+]

@@ -1,19 +1,20 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/layout';
+import { Container, LiquidGlass } from '@/components/common';
 
 export const SectionContact = (props: any) => {
 
 
 	const sendReq = async (e: any) => {
 		e.preventDefault();
+		console.log('test')
 	}
 
 	return (<>
-		<Container as='section' id="contact" className={cls.wrap}>
+		<Container as='section' id="contact" className={`${cls.wrap}`}>
 			<h2 className={`${cls.title} title`}>Связаться с нами</h2>
-			<form className={`glass-box ${cls.form}`} onSubmit={sendReq}>
+			<LiquidGlass as='form' className={`glass-box ${cls.form}`} onSubmit={sendReq}>
 				<div className={cls.form__head}>
 					<h3 className={cls.form__title}>Обсудим Ваши идеи<br /><span>Вместе.</span></h3>
 				</div>
@@ -22,7 +23,7 @@ export const SectionContact = (props: any) => {
 					<input name='phone' type="text" placeholder='Телефон' />
 					<input name='email' type="text" placeholder='Email' />
 					<textarea name='message' placeholder='Сообщение' />
-					<input name='file' type="file" />
+					{/* <input name='file' type="file" /> */}
 				</div>
 				<div className={cls.form__foot}>
 					<button data-variant="second" className={cls.btn}>Сбросить</button>
@@ -30,7 +31,7 @@ export const SectionContact = (props: any) => {
 					<p className={cls.desc}>*Отправляя запрос, вы соглашаетесь с политикой конфиденциальности</p>
 				</div>
 				<img src="/images/space-3.svg" alt="decor" />
-			</form>
+			</LiquidGlass>
 		</Container>
 	</>)
 }

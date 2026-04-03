@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import cls from './style.module.scss';
 import { motion } from 'framer-motion'
+import { LiquidGlass } from '@/components/common';
 
 interface AccordionProps {
 	className?: string;
@@ -27,12 +28,12 @@ export const Accordion = ({ className, label, children, defaultOpen = false, onT
 	}
 
 	return (<>
-		<div data-open={isOpen || null} className={`${cls.wrap} ${className}`}>
+		<LiquidGlass data-open={isOpen || null} className={`${cls.wrap} ${className}`}>
 			<div onClick={toggle} className={cls.label}>{label} <IconDropDown /></div>
 			<motion.div animate={{ height: isOpen ? 'auto' : 0 }} className={cls.content}>
 				<div className={cls.content__value}>{children}</div>
 			</motion.div>
-		</div>
+		</LiquidGlass>
 	</>)
 }
 

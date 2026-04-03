@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/layout';
+import { Container } from '@/components/common';
 
 export const SectionAbout = (props: any) => {
 

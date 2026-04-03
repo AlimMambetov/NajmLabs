@@ -61,10 +61,7 @@ body {
 :where(.glass-box){
 	--p: 30px 80px;
 	--r: 30px;
-	background: linear-gradient(132.86deg, rgba(33, 17, 54, 0.8) 10%, rgba(67, 35, 119, 0.4) 100%);
-  backdrop-filter: blur(3px);
   border-radius: var(--r); 
-  border: 1px solid rgba(255, 255, 255, 0.3);
 	padding: var(--p);
 
 	@include device(laptop){

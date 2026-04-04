@@ -1,5 +1,5 @@
 .wrap{
-
+	position: relative;
 }
 
 
@@ -25,6 +25,7 @@
 .index{
 	position: absolute;
 	left: 0;top: 0;
+	user-select: none;
 
 	@include device('phone'){
 		font-size: 10px;

@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/common';
+import { Blob, Container } from '@/components/common';
 
 export const SectionAbout = (props: any) => {
 
@@ -34,6 +34,9 @@ export const SectionAbout = (props: any) => {
 	return (<>
 		<Container as='section' id='about' className={cls.wrap}>
 			<h2 className={`${cls.title} title`}>О нас</h2>
+
+			<Blob top='30%' translate={'-40%'} animate />
+			<Blob translate={'40%'} right bottom animate />
 
 			<ul className={cls.list}>
 				{

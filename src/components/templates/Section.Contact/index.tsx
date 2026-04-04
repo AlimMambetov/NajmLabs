@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container, LiquidGlass } from '@/components/common';
+import { Blob, Container, LiquidGlass } from '@/components/common';
 
 export const SectionContact = (props: any) => {
 
@@ -13,6 +13,8 @@ export const SectionContact = (props: any) => {
 
 	return (<>
 		<Container as='section' id="contact" className={`${cls.wrap}`}>
+			<Blob right bottom colors={'orange'} translate={'50% 30%'} animate />
+			<Blob translate={'-30% 30%'} animate />
 			<h2 className={`${cls.title} title`}>Связаться с нами</h2>
 			<LiquidGlass as='form' className={`glass-box ${cls.form}`} onSubmit={sendReq}>
 				<div className={cls.form__head}>

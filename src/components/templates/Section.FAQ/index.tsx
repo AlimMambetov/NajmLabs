@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/common';
+import { Blob, Container } from '@/components/common';
 import { Accordion } from '@/components/ui';
 import FAQ from '&/data/FAQ.json'
 
@@ -9,11 +9,13 @@ export const SectionsFAQ = (props: any) => {
 
 
 	const accordions = FAQ.map((item, index) => {
-		return <Accordion key={index} label={item.question}>{item.answer}</Accordion>
+		return <Accordion defaultOpen={index == 0} key={index} label={item.question}>{item.answer}</Accordion>
 	})
 
 	return (<>
 		<Container id='FAQ' as='section' className={cls.wrap}>
+			<Blob right bottom translate={'50% 30%'} animate />
+			<Blob colors={'orange'} translate={'-60% 30%'} animate />
 			<div className={cls.titles}>
 				<h2 className={`${cls.title} title`}>Вопросы</h2>
 				<h3 className={cls.subtitle}>которые у вас могут возникнуть.</h3>

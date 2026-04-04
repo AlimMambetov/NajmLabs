@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import cls from './style.module.scss';
-import { Container } from '@/components/common';
+import { Blob, Container } from '@/components/common';
 import FloatingBalls from '@/components/features/SpaceComponent';
 
 export const SectionsStack = (props: any) => {
@@ -9,6 +9,8 @@ export const SectionsStack = (props: any) => {
 
 	return (<>
 		<Container id='steck' as='section' className={cls.wrap}>
+			<Blob right bottom colors={'orange'} translate={'50% 30%'} animate />
+			<Blob translate={'-30% 30%'} animate />
 			<h2 className={`title ${cls.title}`}>Стек технологий</h2>
 			<FloatingBalls />
 		</Container>

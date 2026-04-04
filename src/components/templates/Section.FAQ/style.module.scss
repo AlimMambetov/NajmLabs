@@ -2,6 +2,7 @@
 	display: grid;
 	grid-template-columns: 0.7fr 1fr;
 	gap: 30px;
+	position: relative;
 
 
 	@include device('tablet'){

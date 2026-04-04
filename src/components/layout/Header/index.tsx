@@ -56,33 +56,18 @@ export const Header = (props: any) => {
 				</div>
 
 
-				{
-					isTouch ?
-						<LiquidGlass data-open={menuIsOpen} className={`${cls.menu} glass-box`}>
-							{nav.map((item) => (
-								<a
-									key={item.id}
-									href={item.link}
-									onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
-								>
-									{item.title}
-								</a>
-							))}
-						</LiquidGlass>
-						:
-						<nav className={cls.menu}>
-							{nav.map((item) => (
-								<a
-									key={item.id}
-									href={item.link}
-									onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
-								>
-									{item.title}
-								</a>
-							))}
-						</nav>
-				}
 
+				<nav data-open={isTouch ? menuIsOpen : null} className={cls.menu}>
+					{nav.map((item) => (
+						<a
+							key={item.id}
+							href={item.link}
+							onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
+						>
+							{item.title}
+						</a>
+					))}
+				</nav>
 
 
 				{isTouch && <Icon

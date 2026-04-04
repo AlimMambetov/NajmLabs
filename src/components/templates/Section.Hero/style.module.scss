@@ -2,6 +2,7 @@
 .wrap{
 	display: grid;
 	grid-template-columns: 600px 1fr;
+	position: relative;
 
 	@include device('tablet'){
 		display: flex;

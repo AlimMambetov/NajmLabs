@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion, AnimatePresence, MotionProps } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Container, Icon, LiquidGlass } from '@/components/common';
+import { Blob, Container, Icon, LiquidGlass } from '@/components/common';
 import cls from './style.module.scss';
 import servicesJSON from '&/data/services.json';
 import { useScreen } from '@/hooks';
@@ -89,6 +89,8 @@ export const SectionServices = (props: any) => {
 
 	return (
 		<Container as='section' id='services' className={cls.wrap}>
+			<Blob right bottom colors={'orange'} translate={'50% 30%'} animate />
+			<Blob translate={'-30% 30%'} animate />
 			<h2 className={`${cls.title} title`}>Наши услуги</h2>
 
 			<div className={cls.grid}>
@@ -177,7 +179,19 @@ export const SectionServices = (props: any) => {
 							>
 								<h4 className={cls.info__subtitle}>Что мы делаем:</h4>
 								{items[activeIndex].list.map((item: any, i: number) => (
-									<li className={`${cls.info__item}`} key={i}>{item}</li>
+									<motion.li
+										custom={direction}
+										variants={contentVariants}
+										initial="enter"
+										animate="center"
+										exit="exit"
+										transition={{
+											...transition,
+											delay: 0.05 + (0.06 * i)
+										}}
+										className={`${cls.info__item}`}
+										key={i}
+									>{item}</motion.li>
 								))}
 							</motion.ul>
 						</AnimatePresence>

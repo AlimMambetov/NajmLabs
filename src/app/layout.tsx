@@ -5,6 +5,7 @@ import { fonts } from "@/scripts/fonts";
 import { Footer, Header } from "@/components/layout";
 import { CSSProperties } from "react";
 import { Particles } from "@/components/features";
+import { Toaster } from 'sonner'
 
 const overlayStyles = {
   position: 'fixed',
@@ -44,6 +45,7 @@ export default async function RootLayout({
           <div id="overlay" style={overlayStyles}>
             <Particles variant={1} />
           </div>
+          <Toaster position="top-right" richColors />
         </AppProviders>
       </body>
     </html>

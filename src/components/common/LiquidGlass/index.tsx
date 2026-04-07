@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { forwardRef } from 'react';
 import cls from './style.module.scss';
 import { MotionProps } from "framer-motion";
 import { Motion } from './Motion';
@@ -97,17 +97,19 @@ interface LiquidGlassProps extends Omit<MotionProps, 'style'> {
 	distortion?: boolean;
 }
 
-export const LiquidGlass = ({
+// Используем forwardRef для проброса ref
+export const LiquidGlass = forwardRef<HTMLElement, LiquidGlassProps>(({
 	as = 'div',
 	children,
 	className,
 	style,
 	distortion = true,
 	...motionProps
-}: LiquidGlassProps) => {
+}, ref) => {
 	return (
 		<Motion
 			as={as as any}
+			ref={ref} // Пробрасываем ref в Motion компонент
 			style={style}
 			{...motionProps}
 			className={`${cls.wrap} ${className || ''}`}
@@ -118,6 +120,9 @@ export const LiquidGlass = ({
 			{distortion && <GlassSVG />}
 		</Motion>
 	)
-}
+});
+
+// Добавляем display name для отладки
+LiquidGlass.displayName = 'LiquidGlass';
 
 export default LiquidGlass;

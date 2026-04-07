@@ -14,8 +14,8 @@ export const SectionsFAQ = (props: any) => {
 
 	return (<>
 		<Container id='FAQ' as='section' className={cls.wrap}>
-			<Blob right bottom translate={'50% 30%'} animate />
-			<Blob colors={'orange'} translate={'-60% 30%'} animate />
+			<Blob right bottom translate={'50% 30%'} />
+			<Blob colors={'orange'} translate={'-60% 30%'} />
 			<div className={cls.titles}>
 				<h2 className={`${cls.title} title`}>Вопросы</h2>
 				<h3 className={cls.subtitle}>которые у вас могут возникнуть.</h3>

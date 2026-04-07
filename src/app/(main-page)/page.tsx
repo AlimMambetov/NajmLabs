@@ -19,7 +19,7 @@ const Home = (props: any) => {
     <SectionAbout />
     <SectionProcess />
     <SectionServices />
-    {/* <SectionPortfolio /> */}
+    <SectionPortfolio />
     <SectionsStack />
     <SectionContact />
     <SectionsFAQ />

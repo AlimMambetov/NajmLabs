@@ -11,8 +11,8 @@ export const SectionHero = (props: any) => {
 
 	return (<>
 		<Container as='section' id="hero" className={cls.wrap}>
-			<Blob translate={'-40% -50%'} animate />
-			<Blob colors={'orange'} translate={'40% 40%'} right bottom animate />
+			<Blob translate={'-40% -50%'} />
+			<Blob colors={'orange'} translate={'40% 40%'} right bottom />
 			<div className={cls.content}>
 				<h1 className={cls.title}>NajmLabs - студия <br /> разработки IT-продуктов</h1>
 				<p className={cls.desc}>Разработка корпоративных сайтов, бизнес-приложений, <br /> создание игровых проектов и профессиональный дизайн.</p>

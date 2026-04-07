@@ -37,7 +37,7 @@ position: relative;
 	
 	@include device('phone'){
 		padding: 20px;
-		min-height: 540px;
+		min-height: 560px;
 	}
 
 
@@ -142,6 +142,10 @@ position: relative;
 		justify-content: center;
 		gap: 40px;
 		margin-top: 10px;
+
+		@include device('tablet'){
+			gap: 20px;
+		}
 		
 		button{
 			font-size: 20px;
@@ -155,6 +159,10 @@ position: relative;
 			background: linear-gradient(45deg, hue(heavy, 0.05), hue(heavy, 0.2));
 			border: 1px solid hue(second, 0.4);
 			position: relative;
+
+			@include device('tablet'){
+				font-size: 16px;
+			}
 		}
 
 		svg{
@@ -202,6 +210,13 @@ position: relative;
 
 	@include device('laptop', 'only'){
 		scale: 0.8;
+	}
+	@include device('tablet', 'only'){
+		scale: 1.4;
+		translate: 0 -15%;
+	}
+	@include device('phone', 'only'){
+		translate: 0 -12%;
 	}
 
 	@include device('tablet'){

@@ -1,6 +1,7 @@
 [
 	{
-		"title": "Корпоративный сайт - СтройИнвест",
+		"title": "СтройИнвест",
+		"subtitle": "Корпоративный сайт",
 		"desc": "Многостраничный сайт для строительной компании с калькулятором сметы, личным кабинетом клиента и интеграцией с 1С. Разработан на Next.js с адаптивной версткой.",
 		"tags": [
 			"Next.js",
@@ -30,10 +31,25 @@
 				"label": "GitHub",
 				"url": "https://github.com/user/stroiinvest"
 			}
+		],
+		"stats": [
+			{
+				"label": "CRASH-FREE",
+				"value": "99%"
+			},
+			{
+				"label": "RETENTION",
+				"value": "3x"
+			},
+			{
+				"label": "WAITING",
+				"value": "Top-10"
+			}
 		]
 	},
 	{
-		"title": "Мобильное приложение - FitTrack",
+		"title": "FitTrack",
+		"subtitle": "iOS/Android приложение",
 		"desc": "iOS/Android приложение для отслеживания тренировок и питания. Подсчет калорий, более 100 упражнений с анимацией, построение графиков прогресса. Офлайн-режим.",
 		"tags": [
 			"React Native",
@@ -63,10 +79,25 @@
 				"label": "GitHub",
 				"url": "https://github.com/user/fittrack"
 			}
+		],
+		"stats": [
+			{
+				"label": "CRASH-FREE",
+				"value": "99.8%"
+			},
+			{
+				"label": "RETENTION",
+				"value": "4.5x"
+			},
+			{
+				"label": "RATING",
+				"value": "4.9"
+			}
 		]
 	},
 	{
-		"title": "Игра - NecroSoul",
+		"title": "NecroSoul",
+		"subtitle": "Souls-like роглайт",
 		"desc": "Трехмерный souls-like роглайт с процедурной генерацией уровней. Собственный AI для врагов, система паррирования и прокачка оружия. Разработано на C++ и Blueprints.",
 		"tags": [
 			"Unreal Engine 5",
@@ -97,10 +128,25 @@
 				"label": "Документация разработчика",
 				"url": "https://docs.necro-soul.com"
 			}
+		],
+		"stats": [
+			{
+				"label": "CRASH-FREE",
+				"value": "99.5%"
+			},
+			{
+				"label": "POSITIVE REVIEWS",
+				"value": "92%"
+			},
+			{
+				"label": "PLAYTIME",
+				"value": "15h+"
+			}
 		]
 	},
 	{
-		"title": "Desktop программа - FileGuard Pro",
+		"title": "FileGuard Pro",
+		"subtitle": "Кроссплатформенный бэкап",
 		"desc": "Кроссплатформенное приложение на Electron для автоматического резервного копирования и восстановления данных. Шифрование AES-256, расписание бэкапов, интеграция с облаками (S3, Google Drive).",
 		"tags": [
 			"Electron",
@@ -130,10 +176,25 @@
 				"label": "GitHub",
 				"url": "https://github.com/user/fileguard"
 			}
+		],
+		"stats": [
+			{
+				"label": "CRASH-FREE",
+				"value": "99.9%"
+			},
+			{
+				"label": "DATA SAVED",
+				"value": "50TB+"
+			},
+			{
+				"label": "RESPONSE",
+				"value": "<10ms"
+			}
 		]
 	},
 	{
-		"title": "Макеты в Figma - CRM «ЛидерСофт»",
+		"title": "CRM «ЛидерСофт»",
+		"subtitle": "Дизайн-система",
 		"desc": "Полный дизайн-система и 50+ экранов для B2B CRM. Автокомпоненты, переменные для темной/светлой темы, прототипирование всех user flows. Адаптив под десктоп, планшет и мобильные.",
 		"tags": [
 			"Figma",
@@ -162,6 +223,20 @@
 			{
 				"label": "Презентация для заказчика",
 				"url": "https://example.com/crm-presentation"
+			}
+		],
+		"stats": [
+			{
+				"label": "CRASH-FREE",
+				"value": "N/A"
+			},
+			{
+				"label": "COMPONENTS",
+				"value": "250+"
+			},
+			{
+				"label": "SCREENS",
+				"value": "50+"
 			}
 		]
 	}

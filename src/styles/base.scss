@@ -9,23 +9,13 @@
 	--header-h: 90px;
 }
 
-* {
-	scroll-margin-top: 40px;
-}
-
 body,
 html {
-	position: relative;
-	min-height: 100vh;
 	overflow-x: hidden;
-	overflow-y: auto;
-
 }
 
 
 body {
-	overflow: hidden;
-	overflow-y: auto;
 	min-height: 100dvh;
 	position: relative;
 	min-width: 360px;

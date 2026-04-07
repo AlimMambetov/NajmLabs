@@ -89,8 +89,8 @@ export const SectionServices = (props: any) => {
 
 	return (
 		<Container as='section' id='services' className={cls.wrap}>
-			<Blob right bottom colors={'orange'} translate={'50% 30%'} animate />
-			<Blob translate={'-30% 30%'} animate />
+			<Blob right colors={'orange'} translate={'50% 30%'} />
+			<Blob translate={'-30% 30%'} />
 			<h2 className={`${cls.title} title`}>Наши услуги</h2>
 
 			<div className={cls.grid}>

@@ -51,9 +51,9 @@ export const SectionProcess = (props: any) => {
 
 	return (<>
 		<Container as='section' id="process" className={cls.wrap}>
-			<Blob colors={'orange'} translate={'-80% 20%'} animate />
-			<Blob translate={'-40%'} left bottom animate />
-			<Blob colors={'orange'} translate={'80%'} right bottom='30%' animate />
+			<Blob colors={'orange'} translate={'-80% 20%'} />
+			<Blob translate={'-40%'} left bottom />
+			<Blob colors={'orange'} translate={'80%'} right bottom='30%' />
 
 			<h2 className={`${cls.title} title`}>Процесс работы</h2>
 			<ul className={cls.list}>

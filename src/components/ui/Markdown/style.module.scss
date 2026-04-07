@@ -1,0 +1,79 @@
+.md{
+	padding: 100px 0;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	color: hue(plain);
+	position: relative;
+
+	*{
+		margin-bottom: 0.6em;
+	}
+	
+	strong{
+		font-weight: bold;
+		color: hue(primary);
+	}
+
+	a{
+		color: hue(heavy);
+		text-decoration: underline;
+	}
+
+	h1{
+		font-size: 50px;
+		font-family: var(--title-font);
+		@include gradient-text(linear-gradient(to right, hue(heavy), hue(primary) 70%));
+		align-self: start;
+
+		@include device('tablet'){
+			font-size: 26px;
+		}
+	}
+
+	h2{
+		font-size: 30px;
+
+		@include device('tablet'){
+			font-size: 22px;
+		}
+	}
+
+	h3{
+		font-size: 18px;
+		font-weight: 500;
+
+		@include device('tablet'){
+			font-size: 16px;
+		}
+	}
+
+	p{
+		@include device('tablet'){
+			font-size: 14px;
+		}
+	}
+
+
+	hr{
+		border: 1px solid hue(second, 0.2);
+		margin: 10px auto;
+		width: 100%;
+	}
+
+	b{
+		color: hue(heavy);
+	}
+
+	ul li{
+		list-style: disc;
+		padding-left: 1em;
+		list-style-position: inside;
+
+		&::marker{
+			color: hue(primary);
+
+		}
+	}
+
+}

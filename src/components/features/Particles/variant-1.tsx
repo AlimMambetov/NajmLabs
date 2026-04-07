@@ -134,7 +134,6 @@ export const Variant_1 = () => {
 		// На мобильных устройствах отключаем созвездия
 		if (isMobile.current) {
 			CONFIG.constellations.enabled = false;
-			console.log('Мобильное устройство обнаружено, эффект созвездий отключен');
 		} else {
 			CONFIG.constellations.enabled = true;
 		}

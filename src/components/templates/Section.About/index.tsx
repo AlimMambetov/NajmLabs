@@ -35,8 +35,8 @@ export const SectionAbout = (props: any) => {
 		<Container as='section' id='about' className={cls.wrap}>
 			<h2 className={`${cls.title} title`}>О нас</h2>
 
-			<Blob top='30%' translate={'-40%'} animate />
-			<Blob translate={'40%'} right bottom animate />
+			<Blob top='30%' translate={'-40%'} />
+			<Blob translate={'40%'} right bottom />
 
 			<ul className={cls.list}>
 				{

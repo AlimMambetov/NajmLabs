@@ -6,6 +6,7 @@ import { Blob, Container, Icon, LiquidGlass } from '@/components/common';
 import cls from './style.module.scss';
 import servicesJSON from '&/data/services.json';
 import { useScreen } from '@/hooks';
+import { scaleIn, slideIn } from '@/scripts/animation';
 
 export const SectionServices = (props: any) => {
 	const { isPointer } = useScreen();
@@ -91,10 +92,10 @@ export const SectionServices = (props: any) => {
 		<Container as='section' id='services' className={cls.wrap}>
 			<Blob right colors={'orange'} translate={'50% 30%'} />
 			<Blob translate={'-30% 30%'} />
-			<h2 className={`${cls.title} title`}>Наши услуги</h2>
+			<motion.h2 {...slideIn({ direction: 'left', delay: 0.5 })} className={`${cls.title} title`}>Наши услуги</motion.h2>
 
 			<div className={cls.grid}>
-				<div className={cls.orbit} >
+				<motion.div {...scaleIn({ delay: 0.4, duration: 1 })} className={cls.orbit} >
 					<img src="/images/orbit.svg" alt="orbit-line" />
 					<LiquidGlass distortion={false} className={cls.orbit__center}>
 						<Icon as={'logo'} />
@@ -125,10 +126,10 @@ export const SectionServices = (props: any) => {
 						})}
 					</div>
 
-				</div>
+				</motion.div>
 
 
-				<LiquidGlass className={`${cls.info} glass-box`}>
+				<LiquidGlass {...slideIn({ direction: 'left', delay: 0.4, duration: 1 })} className={`${cls.info} glass-box`}>
 					<div className={cls.info__head}>
 						<div className={`${cls.info__icon} `}>
 							<Icon as={items[activeIndex].icon as any} />

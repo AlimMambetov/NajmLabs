@@ -126,7 +126,7 @@
 	}
 
 
-	&__tag{
+	&__tag span{
 		--bg: color-mix(in srgb, var(--decor), transparent 85%);
 		color:var(--decor);
 		font-size: 14px;
@@ -135,6 +135,7 @@
 		border-radius: 100px;
 		border: 1px solid currentColor;
 		font-weight: 600;
+		display: inline-flex;
 
 		@include device('phone'){
 			font-size: 11px;

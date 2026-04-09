@@ -3,6 +3,9 @@ import React, { useRef, useState } from 'react';
 import cls from './style.module.scss';
 import { Blob, Container, LiquidGlass } from '@/components/common';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion'
+import { fadeIn, scaleIn, slideIn } from '@/scripts/animation';
+
 
 export const SectionContact = (props: any) => {
 	const [sendLoading, sendLoadingSetter] = useState(false)
@@ -46,24 +49,24 @@ export const SectionContact = (props: any) => {
 		<Container as='section' id="contact" className={`${cls.wrap}`}>
 			<Blob right bottom colors={'orange'} translate={'50% 30%'} />
 			<Blob translate={'-30% 30%'} />
-			<h2 className={`${cls.title} title`}>Связаться с нами</h2>
+			<motion.h2  {...slideIn({ direction: 'left', delay: 0.5 })} className={`${cls.title} title`}>Связаться с нами</motion.h2>
 			<LiquidGlass ref={formRef} as='form' className={`glass-box ${cls.form}`} onSubmit={sendReq}>
 				<div className={cls.form__head}>
-					<h3 className={cls.form__title}>Обсудим Ваши идеи<br /><span>Вместе.</span></h3>
+					<motion.h3 {...slideIn({ direction: 'left', delay: 0.6 })} className={cls.form__title}>Обсудим Ваши идеи<br /><span>Вместе.</span></motion.h3>
 				</div>
 				<div className={cls.form__main}>
-					<input required name='name' type="text" placeholder='Имя' />
-					<input required name='phone' type="text" placeholder='Телефон' />
-					<input required name='email' type="text" placeholder='Email' />
-					<textarea required name='message' placeholder='Сообщение' />
+					<motion.input  {...slideIn({ delay: 0.7 })} required name='name' type="text" placeholder='Имя' />
+					<motion.input  {...slideIn({ delay: 0.8 })} required name='phone' type="text" placeholder='Телефон' />
+					<motion.input  {...slideIn({ delay: 0.9 })} required name='email' type="text" placeholder='Email' />
+					<motion.textarea  {...slideIn({ delay: 0.8, direction: 'left' })} required name='message' placeholder='Сообщение' />
 					{/* <input name='file' type="file" /> */}
 				</div>
-				<div className={cls.form__foot}>
+				<motion.div {...slideIn({ direction: 'up', delay: 1 })} className={cls.form__foot}>
 					<button type='reset' data-variant="second" className={cls.btn}>Сбросить</button>
 					<button disabled={sendLoading} type='submit' className={cls.btn}>Отправить</button>
 					<p className={cls.desc}>*Отправляя запрос, вы соглашаетесь с политикой конфиденциальности</p>
-				</div>
-				<img src="/images/space-3.svg" alt="decor" />
+				</motion.div>
+				<motion.img {...fadeIn({ delay: 0.5, duration: 1.5 })} src="/images/space-3.svg" alt="decor" />
 			</LiquidGlass>
 		</Container>
 	</>)

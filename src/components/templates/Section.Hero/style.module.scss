@@ -73,6 +73,13 @@
 }
 
 
+.circlebox{
+	width: 100%; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .circle{
 	width: 100%;
 	translate: 50px;

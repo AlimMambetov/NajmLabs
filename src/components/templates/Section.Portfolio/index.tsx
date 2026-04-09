@@ -4,6 +4,7 @@ import cls from './style.module.scss'
 import { Blob, Container } from '@/components/common'
 import portfolioJSON from '&/data/portfolio.json'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { flipIn, scaleIn, slideIn } from '@/scripts/animation'
 
 type ItemProps = {
 	item: any
@@ -70,15 +71,15 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 			{isEven && <Blob colors={'orange'} translate={'40% -20%'} right />}
 
 			<div className={cls.info}>
-				<h3 className={cls.info__title}>{title}</h3>
-				<h5 className={cls.info__subtitle}>{subtitle}</h5>
-				<p className={cls.info__desc}>{desc}</p>
+				<motion.h3 {...slideIn({ direction: 'up', delay: 0.5 })} className={cls.info__title}>{title}</motion.h3>
+				<motion.h5 {...slideIn({ direction: 'up', delay: 0.6 })} className={cls.info__subtitle}>{subtitle}</motion.h5>
+				<motion.p  {...slideIn({ direction: 'up', delay: 0.7 })} className={cls.info__desc}>{desc}</motion.p>
 
 				<ul className={cls.info__stats}>
 					{stats.map((stat: any, i: number) => (
 						<li className={cls.info__stat} key={i}>
-							<b>{stat.value}</b>
-							<span>{stat.label}</span>
+							<motion.b  {...scaleIn({ delay: 0.4 + 0.2 * i })}>{stat.value}</motion.b>
+							<motion.span  {...slideIn({ direction: 'up', delay: 0.4 + 0.2 * i })}>{stat.label}</motion.span>
 						</li>
 					))}
 				</ul>
@@ -86,7 +87,9 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 				<ul className={cls.info__tags}>
 					{tags.map((tag: any, i: number) => (
 						<li className={cls.info__tag} key={i}>
-							{tag}
+							<motion.span {...slideIn({ direction: 'left', delay: 0.6 + 0.2 * i })} >
+								{tag}
+							</motion.span>
 						</li>
 					))}
 				</ul>
@@ -97,6 +100,7 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 				onMouseMove={handleMouseMove}
 				onMouseLeave={handleMouseLeave}
 				onMouseEnter={handleMouseEnter}
+				{...flipIn({ delay: 0.8, flipDirection: isEven ? 'left' : 'right', axis: 'Y' })}
 			>
 				<motion.img
 					ref={imgRef}
@@ -114,7 +118,7 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 export const SectionPortfolio = () => {
 	return (
 		<Container as='section' className={cls.wrap} id='portfolio'>
-			<h2 className={`${cls.title} title`}>Портфолио</h2>
+			<motion.h2  {...slideIn({ direction: 'left', delay: 0.5 })} className={`${cls.title} title`}>Портфолио</motion.h2>
 
 			<div className={cls.portfolio}>
 				{portfolioJSON.map((item, index) => (

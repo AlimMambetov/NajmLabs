@@ -2,6 +2,8 @@
 import React from 'react';
 import cls from './style.module.scss';
 import { Blob, Container } from '@/components/common';
+import { scaleIn, sectionViewOps, slideIn } from '@/scripts/animation';
+import { motion } from 'framer-motion'
 
 export const SectionAbout = (props: any) => {
 
@@ -32,8 +34,8 @@ export const SectionAbout = (props: any) => {
 
 
 	return (<>
-		<Container as='section' id='about' className={cls.wrap}>
-			<h2 className={`${cls.title} title`}>О нас</h2>
+		<Container {...sectionViewOps({ delayChildren: 1 })} as='section' id='about' className={cls.wrap}>
+			<motion.h2  {...slideIn({ asVariant: true, direction: 'left' })} className={`${cls.title} title`}>О нас</motion.h2>
 
 			<Blob top='30%' translate={'-40%'} />
 			<Blob translate={'40%'} right bottom />
@@ -42,21 +44,21 @@ export const SectionAbout = (props: any) => {
 				{
 					data.map((el, i) => (
 						<li key={i} className={cls.item}>
-							<div className={cls.content}>
-								<div className={`${cls.icon} icon-box`}>
+							<motion.div {...sectionViewOps({ delayChildren: 1 })} className={cls.content}>
+								<motion.div {...slideIn({ delay: 0.5, direction: 'right' })} className={`${cls.icon} icon-box`}>
 									<img src={`/images/${el.icon}`} alt={el.title} data-icon={el.icon} />
-								</div>
-								<h3 className={cls.subtitle}>{el.title}<br /><span>{el.subtitle}</span></h3>
-								<p className={cls.desc}>{el.desc}</p>
-							</div>
-							<div className={cls.image} data-img={el.image}>
+								</motion.div>
+								<motion.h3  {...slideIn({ delay: 0.6, direction: 'left' })} className={cls.subtitle}>{el.title}<br /><span>{el.subtitle}</span></motion.h3>
+								<motion.p   {...slideIn({ delay: 0.7, direction: 'left' })} className={cls.desc}>{el.desc}</motion.p>
+							</motion.div>
+							<motion.div {...scaleIn({ delay: 0.5 })} className={cls.image} data-img={el.image}>
 								<img src={`/images/${el.image}`} alt={el.image} />
 								{el.type === 'func' && <>
 									<span data-border />
 									<span data-line='1' />
 									<span data-line='2' />
 								</>}
-							</div>
+							</motion.div>
 						</li>
 					))
 				}

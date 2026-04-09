@@ -2,6 +2,9 @@
 import React from 'react';
 import cls from './style.module.scss';
 import { Blob, Container } from '@/components/common';
+import { motion } from 'framer-motion'
+import { scaleIn, slideIn } from '@/scripts/animation';
+
 
 export const SectionProcess = (props: any) => {
 
@@ -55,20 +58,20 @@ export const SectionProcess = (props: any) => {
 			<Blob translate={'-40%'} left bottom />
 			<Blob colors={'orange'} translate={'80%'} right bottom='30%' />
 
-			<h2 className={`${cls.title} title`}>Процесс работы</h2>
+			<motion.h2 {...slideIn({ asVariant: true, direction: 'left' })} className={`${cls.title} title`}>Процесс работы</motion.h2>
 			<ul className={cls.list}>
 				{data.map((item: any, index) => (
 					<li key={index} className={cls.item}>
-						<div className={`${cls.index} icon-box`}> <span>{index + 1}</span>	</div>
-						<div className={cls.content}>
-							<h3 className={cls.itemTitle}>{item.title}</h3>
-							<p className={cls.desc}>{item.desc}</p>
-							<p className={cls.subtitle}>{item.subtitle}</p>
-							<p className={cls.result}>{item.result}</p>
-						</div>
-						<div className={cls.image}>
+						<motion.div {...slideIn({ delay: 0.5, direction: 'right' })} className={`${cls.index} icon-box`}> <span>{index + 1}</span>	</motion.div>
+						<motion.div className={cls.content}>
+							<motion.h3 {...slideIn({ delay: 0.6, direction: 'left' })} className={cls.itemTitle}>{item.title}</motion.h3>
+							<motion.p {...slideIn({ delay: 0.7, direction: 'left' })} className={cls.desc}>{item.desc}</motion.p>
+							<motion.p {...slideIn({ delay: 0.8, direction: 'left' })} className={cls.subtitle}>{item.subtitle}</motion.p>
+							<motion.p {...slideIn({ delay: 0.9, direction: 'left' })} className={cls.result}>{item.result}</motion.p>
+						</motion.div>
+						<motion.div {...scaleIn({ delay: 0.5 })} className={cls.image}>
 							<img src={`/images/process/${item.image}`} alt={item.image} />
-						</div>
+						</motion.div>
 						{index !== data.length - 1 && (
 							<div className={cls.vector} data-vector={index + 1}>
 								<img src={`/images/${item.vector}`} alt="vector" />

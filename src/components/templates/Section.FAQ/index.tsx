@@ -26,7 +26,7 @@ export const SectionsFAQ = (props: any) => {
 			<div className={cls.titles}>
 				<motion.h2  {...slideIn({ direction: 'left', delay: 0.5 })} className={`${cls.title} title`}>Вопросы</motion.h2>
 				<motion.h3 {...slideIn({ direction: 'up', delay: 0.6 })} className={cls.subtitle}>которые у вас могут возникнуть.</motion.h3>
-				<motion.img {...scaleIn({ delay: 0.8 })} src="/images/space-4.svg" alt="decor" />
+				<motion.img {...scaleIn({ delay: 0.8 })} src="/images/space-4.png" alt="decor" />
 			</div>
 			<div className={cls.accordion}>{accordions}</div>
 		</Container>

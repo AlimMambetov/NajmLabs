@@ -66,7 +66,7 @@ export const SectionContact = (props: any) => {
 					<button disabled={sendLoading} type='submit' className={cls.btn}>Отправить</button>
 					<p className={cls.desc}>*Отправляя запрос, вы соглашаетесь с политикой конфиденциальности</p>
 				</motion.div>
-				<motion.img {...fadeIn({ delay: 0.5, duration: 1.5 })} src="/images/space-3.svg" alt="decor" />
+				<motion.img {...fadeIn({ delay: 0.5, duration: 1.5 })} src="/images/space-3.png" alt="decor" />
 			</LiquidGlass>
 		</Container>
 	</>)

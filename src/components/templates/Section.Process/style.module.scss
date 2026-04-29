@@ -49,7 +49,7 @@
 	position: absolute;
 	top: 0;right: 0;
 	height: 380px;
-	animation: light 3s ease infinite;
+	// animation: light 3s ease infinite;
 
 	@keyframes light {
 		0%,100% {			
@@ -130,7 +130,15 @@
 }
 
 
+.vector{
+	max-width: 150px;
+	max-height: 150px;
 
+	img{
+		width: 100%; height: 100%;
+		object-fit: cover;
+	}
+}
 
 .item:nth-child(odd) .image{
 	translate: 120px -100px;

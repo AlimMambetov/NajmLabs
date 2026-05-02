@@ -105,10 +105,6 @@
 			align-items: center;
 		}
 
-		[name=message]{
-			grid-column: 2;
-			grid-row: 1 / span 3;
-		}
 	}
 
 
@@ -189,4 +185,46 @@
 .btn:hover::before {
 	transition-delay: 0.2s;
 	left: 100%;
+}
+
+
+
+.inputWrapper {
+  position: relative;
+  margin-bottom: 1rem;
+  width: 100%;
+
+	&[data-inp=message]{
+		grid-column: 2;
+		grid-row: 1 / span 3;
+	}
+}
+
+.error {
+  border-color: #ff4444 !important;
+  
+  &:focus {
+    border-color: #ff4444 !important;
+    box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.2);
+  }
+}
+
+.errorMessage {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  font-size: 12px;
+  color: #ff4444;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

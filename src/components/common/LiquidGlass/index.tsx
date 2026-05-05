@@ -117,7 +117,7 @@ export const LiquidGlass = forwardRef<HTMLElement, LiquidGlassProps>(({
 		>
 			{children}
 			<div className={cls.effect} />
-			{distortion && <GlassSVG />}
+			{/* {distortion && <GlassSVG />} */}
 		</Motion>
 	)
 });

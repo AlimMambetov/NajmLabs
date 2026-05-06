@@ -3,7 +3,7 @@
 import React, { CSSProperties, ReactNode, createElement } from 'react';
 import { motion } from 'framer-motion';
 import cls from './style.module.scss';
-import { useScreen } from '@/hooks';
+// import { useScreen } from '@/hooks';
 
 const MOTION_ELEMENTS = [
 	// Структурные
@@ -64,9 +64,11 @@ export const Container = ({
 	as = 'div',
 	...props
 }: ContainerProps) => {
-	const { adaptiveValue } = useScreen();
-	const maxw = adaptiveValue({ desktop: 1200, laptop: 1000, tablet: 800, phone: 400 }, { unit: 'px' });
-	const spacing = adaptiveValue({ desktop: 30, laptop: 25, tablet: 20, phone: 10 }, { unit: 'px' });
+	// const { adaptiveValue } = useScreen();
+	// const maxw = adaptiveValue({ desktop: 1200, laptop: 1000, tablet: 800, phone: 400 }, { unit: 'px' });
+	// const spacing = adaptiveValue({ desktop: 30, laptop: 25, tablet: 20, phone: 10 }, { unit: 'px' });
+	const maxw = 1200 + 'px';
+	const spacing = 30 + 'px';
 
 	const MotionComponent = motionComponents[as];
 

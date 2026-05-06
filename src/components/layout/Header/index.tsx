@@ -4,7 +4,7 @@ import cls from './style.module.scss';
 import { Container } from '@/components/common';
 import { scrollToElement, setId } from '@/scripts';
 import { Icon, LiquidGlass } from '@/components/common';
-import { useScreen } from '@/hooks';
+// import { useScreen } from '@/hooks';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -45,17 +45,22 @@ const nav = [
 
 
 export const Header = (props: any) => {
-	const { isTouch } = useScreen();
+	// const { isTouch } = useScreen();
+	const isTouch = false;
 	const router = useRouter();
 	const pathname = usePathname();
 	const isHome = pathname == '/';
 	const [menuIsOpen, menuIsOpenSetter] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
-	const bodyRef = useRef(document.body);
+	const bodyRef = useRef<HTMLElement | null>(null);
+
+	useEffect(() => {
+		bodyRef.current = document.body;
+	}, []);
+
 	const { scrollY } = useScroll({
 		container: bodyRef
 	});
-
 
 	const toggleMenu = () => menuIsOpenSetter(prev => !prev);
 
@@ -82,7 +87,7 @@ export const Header = (props: any) => {
 
 				{
 					isHome && (<>
-						<nav data-open={isTouch ? menuIsOpen : null} className={cls.menu}>
+						<nav data-open={menuIsOpen || null} className={cls.menu}>
 							{nav.map((item) => (
 								<a
 									key={item.id}
@@ -95,11 +100,11 @@ export const Header = (props: any) => {
 						</nav>
 
 
-						{isTouch && <Icon
+						<Icon
 							as={menuIsOpen ? 'cross' : 'menu'}
 							onClick={toggleMenu}
 							className={cls.menuBtn}
-						/>}
+						/>
 
 					</>)
 				}

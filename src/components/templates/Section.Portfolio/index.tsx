@@ -12,7 +12,7 @@ type ItemProps = {
 }
 
 const PortfolioItem = ({ item, index }: ItemProps) => {
-	const { title, subtitle, desc, stats, tags, preview } = item
+	const { title, subtitle, desc, stats, tags, preview, video } = item
 	const isEven = index % 2 === 0;
 	const isOdd = index % 2 !== 0;
 
@@ -68,7 +68,7 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 			className={cls.item}
 		>
 			{isOdd && <Blob translate={'-50%'} />}
-			{isEven && <Blob colors={'orange'} translate={'40% -20%'} right />}
+			{isEven && <Blob colors={'orange'} translate={'40% -20%'} right bottom='-30%' />}
 
 			<div className={cls.info}>
 				<motion.h3 {...slideIn({ direction: 'up', delay: 0.5 })} className={cls.info__title}>{title}</motion.h3>
@@ -102,9 +102,20 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 				onMouseEnter={handleMouseEnter}
 				{...flipIn({ delay: 0.8, flipDirection: isEven ? 'left' : 'right', axis: 'Y' })}
 			>
-				<motion.img
+				{/* <motion.img
 					ref={imgRef}
 					src={preview}
+					style={{
+						rotateX: smoothRotateX,
+						rotateY: smoothRotateY
+					}}
+				/> */}
+				<motion.video
+					autoPlay
+					muted
+					ref={imgRef}
+					src={`/videos/${video}`}
+					loop
 					style={{
 						rotateX: smoothRotateX,
 						rotateY: smoothRotateY

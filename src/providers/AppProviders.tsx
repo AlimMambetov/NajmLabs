@@ -4,7 +4,7 @@ import { reduxProvider, callOpsProvider, MountProvider } from './index';
 const providers = [
 	callOpsProvider,
 	reduxProvider,
-	MountProvider,
+	// MountProvider,
 ];
 
 export const AppProviders = ({ children }: { children?: ReactNode }) => {

@@ -13,13 +13,33 @@
 }
 
 
+// const maxw = adaptiveValue({ desktop: 1200, laptop: 1000, tablet: 800, phone: 400 }, { unit: 'px' });
+// const spacing = adaptiveValue({ desktop: 30, laptop: 25, tablet: 20, phone: 10 }, { unit: 'px' });
+
 .container {
-  width: calc(100% - (var(--spacing) * 2));
-  max-width: calc(var(--max-w));
+  width: calc(100% - (30px * 2));
+  max-width: calc(1200px);
 
   &._full {
     width: 100%;
-    max-width: calc(var(--max-w) + (var(--spacing) * 2));
+    max-width: calc(1200px + (30px * 2));
+  }
+
+
+
+  @include device('laptop'){    
+    width: calc(100% - (25px * 2));
+    max-width: calc(1000px);
+  }
+
+  @include device('tablet'){    
+    width: calc(100% - (20px * 2));
+    max-width: calc(800px);
+  }
+
+  @include device('phone'){    
+    width: calc(100% - (10px * 2));
+    max-width: calc(400px);
   }
 }
 

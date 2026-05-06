@@ -31,7 +31,7 @@
 		font-size: 10px;
 		top: -2em;
 		left: 0em;
-		opacity: 0.6;
+		opacity: 0.6 !important;
 	}
 }
 
@@ -118,14 +118,14 @@
 
 .image, .vector{
 	@include device('laptop', 'only'){
-		opacity: 0.4;	
+		opacity: 0.4 !important;	
 	}
 
 	@include device('tablet'){
-		opacity: 0.3;
+		opacity: 0.3 !important;
 	}
 	@include device('phone'){
-		opacity: 1;
+		opacity: 1 !important;
 	}
 }
 

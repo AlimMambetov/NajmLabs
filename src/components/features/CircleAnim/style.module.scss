@@ -1,58 +1,38 @@
-:where(.circle){
-	width: 700px;
-}
-
-.circle{
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	aspect-ratio: 1/1;
-
-	img{
-		width: 100%;
-		position: absolute;
-	}
-}
-
-@keyframes rotateRight {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-@keyframes rotateLeft {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(-360deg);
-	}
-}
-
-@keyframes pulse {
-	0% {
-		transform: scale(1);
-	}
-	50% {
-		transform: scale(1.1);
-	}
-	100% {
-		transform: scale(1);
-	}
-}
-
-.rotate-right {
-	animation: rotateRight 20s linear infinite;
-}
-
-.rotate-left {
-	animation: rotateLeft 20s linear infinite;
-}
-
-.pulse {
-	animation: pulse 2s ease-in-out infinite;
+.circle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto; // Центрирование
+  
+  // Оптимизация для GPU
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  img, .circleImage {
+    width: 100%;
+    position: absolute;
+    pointer-events: none; // Важно: изображения не блокируют клики
+    user-select: none; // Не выделяется
+    -webkit-user-drag: none; // Не перетаскивается
+    
+    // Оптимизация для плавности
+    will-change: transform;
+    backface-visibility: hidden;
+    
+    // Для статического состояния без анимации
+    &[data-static="true"] {
+      opacity: 0.6;
+    }
+  }
+  
+  // Медиа-запросы вместо хука useScreen
+  @media (max-width: 768px) {
+    width: 80vw; // Меньше на планшетах
+  }
+  
+  @media (max-width: 480px) {
+    width: 95vw; // Еще меньше на телефонах
+  }
 }

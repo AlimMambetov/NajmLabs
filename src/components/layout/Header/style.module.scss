@@ -44,8 +44,23 @@
   gap: 20px;
   align-items: center;
 
+  
 
-  &[data-open]{
+  a{
+    color: hue(plain);
+    font-weight: 500;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    padding: 5px;
+    white-space: nowrap;
+
+    &:hover{
+      color: hue(primary);
+    }
+  }
+
+  
+  @include device('tablet'){   
     position: absolute;
     right: 0;bottom: -20px;
     flex-direction: column;
@@ -68,31 +83,26 @@
       width: 100%;
       text-align: center;
     }
-  }
 
-   &[data-open=true]{
-    pointer-events: auto;
-    opacity: 1;
-    translate: 0 100%;
-  }
-
-
-
-  a{
-    color: hue(plain);
-    font-weight: 500;
-    font-size: 18px;
-    transition: color 0.3s ease;
-    padding: 5px;
-    white-space: nowrap;
-
-    &:hover{
-      color: hue(primary);
+     &[data-open=true]{
+      pointer-events: auto;
+      opacity: 1;
+      translate: 0 100%;
     }
+
   }
+
+
+
 
   &Btn{
     font-size: 38px;
     color: hue(heavy);
+    display: none;
+
+
+    @include device('tablet'){
+      display: flex;
+    }
   }
 }

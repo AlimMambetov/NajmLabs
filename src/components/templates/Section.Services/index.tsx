@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react';
 import { Blob, Container, Icon, LiquidGlass } from '@/components/common';
 import cls from './style.module.scss';
 import servicesJSON from '&/data/services.json';
-import { useScreen } from '@/hooks';
+// import { useScreen } from '@/hooks';
 import { scaleIn, slideIn } from '@/scripts/animation';
 
 export const SectionServices = (props: any) => {
-	const { isPointer } = useScreen();
+	// const { isPointer } = useScreen();
+	const isPointer = true;
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [targetIndex, setTargetIndex] = useState(null);
 	const items = servicesJSON || [];

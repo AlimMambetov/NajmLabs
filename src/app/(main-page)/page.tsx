@@ -16,8 +16,8 @@ const Home = (props: any) => {
 
   return <main className={cls.wrap}>
     <SectionHero />
-    {/* <SectionAbout /> */}
-    {/* <SectionProcess /> */}
+    <SectionAbout />
+    <SectionProcess />
     <SectionServices />
     <SectionPortfolio />
     <SectionsStack />

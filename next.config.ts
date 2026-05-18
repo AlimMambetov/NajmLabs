@@ -4,6 +4,7 @@ import path from 'path';
 const globalStyles = ['vars', 'funcs', 'mixins', 'media', 'colors'];
 
 const nextConfig: NextConfig = {
+  output: 'export',
   poweredByHeader: false,
   reactStrictMode: false,
   env: {

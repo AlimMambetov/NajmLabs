@@ -1,0 +1,19 @@
+.wrap{
+	display: flex;
+	flex-direction: column;
+	gap: 250px;
+	padding: 60px 0;
+
+
+	@include device('phone'){
+		gap: 100px;
+		padding: 20px 0;
+	}
+}
+
+.glass{
+	width: 400px;
+	margin: 0 auto;
+	border-radius: 20px;
+	padding: 50px;
+}

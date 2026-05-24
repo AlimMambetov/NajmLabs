@@ -10,7 +10,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 
-const nav = [
+export const nav = [
 	{
 		id: setId(),
 		title: 'О нас',
@@ -39,7 +39,7 @@ const nav = [
 	{
 		id: setId(),
 		title: 'Вопросы',
-		link: '#FAQ'
+		link: '/FAQ'
 	},
 ];
 
@@ -71,6 +71,26 @@ export const Header = (props: any) => {
 	});
 
 
+
+	const clickItem = (e: React.MouseEvent, item: typeof nav[0]) => {
+		e.preventDefault();
+
+		if (item.link.startsWith('#')) {
+			scrollToElement(item.link);
+			menuIsOpenSetter(false);
+		}
+		else if (item.link.startsWith('/')) {
+			router.push(item.link);
+			menuIsOpenSetter(false);
+		}
+		else if (item.link.startsWith('http')) {
+			window.open(item.link, '_blank');
+			menuIsOpenSetter(false);
+		}
+	};
+
+
+
 	return (
 		<Container data-scrolled={isScrolled || null} as='header' className={`${cls.header}`}>
 			<LiquidGlass className={`${cls.header__content} glass-box`}>
@@ -81,7 +101,7 @@ export const Header = (props: any) => {
 
 				{
 					!isHome && (<>
-						<Link className={cls.link} href={'/'}>Back Home</Link>
+						<Link className={cls.link} href={'/'}>Назад</Link>
 					</>)
 				}
 
@@ -92,7 +112,7 @@ export const Header = (props: any) => {
 								<a
 									key={item.id}
 									href={item.link}
-									onClick={(e) => { e.preventDefault(); scrollToElement(item.link); menuIsOpenSetter(false); }}
+									onClick={e => clickItem(e, item)}
 								>
 									{item.title}
 								</a>

@@ -1,30 +1,32 @@
-.wrap{
+.wrap {
 	position: relative;
 
-	input, textarea{
-		background: linear-gradient(to right, rgba($color: #503884, $alpha: 0.2), rgba($color: #685EB6, $alpha: 0.3)  80%);
+	input,
+	textarea {
+		background: linear-gradient(to right, rgba($color: #503884, $alpha: 0.2), rgba($color: #685EB6, $alpha: 0.3) 80%);
 		color: hue(plain);
 		font-size: 20px;
 		border-radius: 10px;
 		font-weight: 500;
 		padding: 0.8em 1em;
 		display: block;
-		width: 100%; height: 100%;
+		width: 100%;
+		height: 100%;
 		border: 1px solid hue(second, 0.2);
 
 
-		@include device('tablet'){
+		@include device('tablet') {
 			font-size: 16px;
 		}
 	}
 
-	textarea{
+	textarea {
 		min-height: 200px;
 	}
 }
 
 
-.form{
+.form {
 	position: relative;
 	overflow: hidden;
 	display: flex;
@@ -32,46 +34,48 @@
 	gap: 30px;
 	padding-top: 50px;
 	padding-bottom: 50px;
-	
-	
-		
-	@include device('tablet'){
+
+
+
+	@include device('tablet') {
 		padding-top: 30px;
-		padding-bottom: 30px;				
+		padding-bottom: 30px;
 		gap: 10px;
 		justify-content: center;
 		align-items: center;
-		text-align: center;
+		// text-align: center;
 	}
 
-	input, textarea{
+	input,
+	textarea {
 		display: block;
 		width: 100%;
 
-		&::placeholder{
+		&::placeholder {
 			transition: 0.3s;
 		}
 
-		&:focus::placeholder{
+		&:focus::placeholder {
 			translate: 0 -100%;
 			opacity: 0;
 		}
 	}
 
-	[alt=decor]{
+	[alt=decor] {
 		position: absolute;
-		right: 0;bottom: 0;
+		right: 0;
+		bottom: 0;
 		width: 800px;
 		user-select: none;
 		pointer-events: none;
 		z-index: -1;
 
-		@include device('laptop'){
+		@include device('laptop') {
 			opacity: 0.8;
 		}
 
-		
-		@include device('tablet'){
+
+		@include device('tablet') {
 			opacity: 0.2;
 			width: 600px;
 		}
@@ -79,24 +83,27 @@
 
 
 
-	&__title{
+	&__title {
 		font-size: 28px;
 		font-weight: 700;
 		line-height: 1.2;
 		margin-bottom: 20px;
-		span{	@include gradient-text(linear-gradient(to right, hue(heavy), hue(primary)));}
+
+		span {
+			@include gradient-text(linear-gradient(to right, hue(heavy), hue(primary)));
+		}
 	}
 
 
 
-	&__main{
+	&__main {
 		display: grid;
 		grid-template-columns: 1fr 1.3fr;
 		gap: 20px;
 		max-width: 100%;
 		width: 100%;
-		
-		@include device('tablet'){
+
+		@include device('tablet') {
 			padding: 0;
 			display: flex;
 			flex-direction: column;
@@ -108,14 +115,19 @@
 	}
 
 
-	&__foot{
+	&__foot {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__btns {
+		max-width: 500px;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 20px;
-		max-width: 500px;
-		width: 100%;
-		
-		@include device('phone'){
+
+		@include device('phone') {
 			gap: 20px 10px;
 		}
 	}
@@ -123,8 +135,10 @@
 }
 
 
-.desc{
+.desc {
 	grid-column: 1/-1;
+	grid-row: 1;
+	justify-self: start;
 	font-size: 14px;
 	color: hue(plain, 0.7);
 	font-weight: 200;
@@ -134,8 +148,8 @@
 
 
 
-.btn{
-	background: linear-gradient(to right, rgba($color: #503884, $alpha: 0.4), rgba($color: #685EB6, $alpha: 0.4)  80%);
+.btn {
+	background: linear-gradient(to right, rgba($color: #503884, $alpha: 0.4), rgba($color: #685EB6, $alpha: 0.4) 80%);
 	color: hue(plain);
 	font-size: 20px;
 	border-radius: 16px;
@@ -149,8 +163,13 @@
 	transition: all 0.3s ease;
 	overflow: hidden;
 
-	
-	@include device('phone'){
+	&:disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+
+	@include device('phone') {
 		margin-top: 20px;
 		font-size: 16px;
 		padding: 14px;
@@ -168,7 +187,7 @@
 	}
 
 
-	&:hover{
+	&:hover {
 		background: linear-gradient(to right, rgba($color: #503884, $alpha: 0.7), rgba($color: #685EB6, $alpha: 0.7) 80%);
 		box-shadow: 0 0 20px rgba(80, 56, 132, 0.5);
 		border-color: rgba(255, 255, 255, 0.5);
@@ -176,8 +195,8 @@
 	}
 
 
-	&[data-variant=second]{
-		background: linear-gradient(to right, rgba($color: #2A2931, $alpha: 0.3), rgba($color: #ACACAC, $alpha: 0.1)  80%);
+	&[data-variant=second] {
+		background: linear-gradient(to right, rgba($color: #2A2931, $alpha: 0.3), rgba($color: #ACACAC, $alpha: 0.1) 80%);
 	}
 
 }
@@ -190,41 +209,42 @@
 
 
 .inputWrapper {
-  position: relative;
-  margin-bottom: 1rem;
-  width: 100%;
+	position: relative;
+	margin-bottom: 1rem;
+	width: 100%;
 
-	&[data-inp=message]{
+	&[data-inp=message] {
 		grid-column: 2;
 		grid-row: 1 / span 3;
 	}
 }
 
 .error {
-  border-color: #ff4444 !important;
-  
-  &:focus {
-    border-color: #ff4444 !important;
-    box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.2);
-  }
+	border-color: #ff4444 !important;
+
+	&:focus {
+		border-color: #ff4444 !important;
+		box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.2);
+	}
 }
 
 .errorMessage {
-  position: absolute;
-  bottom: -20px;
-  left: 0;
-  font-size: 12px;
-  color: #ff4444;
-  animation: fadeIn 0.3s ease;
+	position: absolute;
+	bottom: -20px;
+	left: 0;
+	font-size: 12px;
+	color: #ff4444;
+	animation: fadeIn 0.3s ease;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(-5px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }

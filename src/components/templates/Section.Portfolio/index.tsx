@@ -61,8 +61,6 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 		}, 0)
 	}, [])
 
-
-
 	return (
 		<motion.div
 			className={cls.item}
@@ -116,6 +114,7 @@ const PortfolioItem = ({ item, index }: ItemProps) => {
 					ref={imgRef}
 					src={`/videos/${video}`}
 					loop
+					playsInline
 					style={{
 						rotateX: smoothRotateX,
 						rotateY: smoothRotateY

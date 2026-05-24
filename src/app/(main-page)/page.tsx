@@ -6,7 +6,6 @@ import {
   SectionPortfolio,
   SectionProcess,
   SectionServices,
-  SectionsFAQ,
   SectionsStack,
 
 } from '@/components/templates';
@@ -22,7 +21,6 @@ const Home = (props: any) => {
     <SectionPortfolio />
     <SectionsStack />
     <SectionContact />
-    <SectionsFAQ />
   </main>
 }
 

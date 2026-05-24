@@ -5,12 +5,12 @@
 			"path": "."
 		},
 		{
-			"name": "🌐 API",
-			"path": "src/app/api"
-		},
-		{
 			"name": "🎨 PUBLIC-ASSETS",
 			"path": "public"
+		},
+		{
+			"name": "🌐 API",
+			"path": "src/app/api"
 		},
 		{
 			"name": "🔀 APP-ROUTER",
@@ -35,6 +35,7 @@
 			"**/components": true,
 			"**/app": true,
 			"**/public": true,
+			"**.vscode": true,
 			"**/api": true,
 			"**/src": true,
 			"**/node_modules": true, // Скрыть тяжелые node_modules

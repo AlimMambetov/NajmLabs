@@ -5,6 +5,7 @@ import { Blob, Container, LiquidGlass } from '@/components/common';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion'
 import { fadeIn, scaleIn, slideIn } from '@/scripts/animation';
+import { Checkbox } from '@/components/ui';
 
 // Функция для форматирования номера телефона
 const formatPhoneNumber = (value: string) => {
@@ -79,6 +80,7 @@ export const SectionContact = (props: any) => {
 	}>({});
 
 	const formRef = useRef<HTMLFormElement>(null);
+	const [checkbox, setCheckbox] = useState(false);
 
 	// Обработчик изменения номера телефона с форматированием
 	const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -266,11 +268,15 @@ export const SectionContact = (props: any) => {
 					</div>
 				</div>
 				<motion.div {...slideIn({ direction: 'up', delay: 1 })} className={cls.form__foot}>
-					<button type='reset' data-variant="second" className={cls.btn}>Сбросить</button>
-					<button disabled={sendLoading} type='submit' className={cls.btn}>
-						{sendLoading ? 'Отправка...' : 'Отправить'}
-					</button>
-					<p className={cls.desc}>*Отправляя запрос, вы соглашаетесь с политикой конфиденциальности</p>
+					<div className={cls.desc}>
+						<Checkbox checked={checkbox} onChange={setCheckbox} required label={<>Я принимаю условия <a href='/privacy-policy'>политикой конфиденциальности</a></>} />
+					</div>
+					<div className={cls.form__btns}>
+						<button type='reset' data-variant="second" className={cls.btn}>Сбросить</button>
+						<button disabled={!checkbox || sendLoading} type='submit' className={cls.btn}>
+							{sendLoading ? 'Отправка...' : 'Отправить'}
+						</button>
+					</div>
 				</motion.div>
 				<motion.img {...fadeIn({ delay: 0.5, duration: 1.5 })} src="/images/space-3.png" alt="decor" />
 			</LiquidGlass>
